@@ -37,3 +37,12 @@ export function fetchEvents() {
         );
   };
 }
+
+
+export function nextMonthClicked(){
+	return { type: constants.NEXT_MONTH_CLICKED}
+}
+
+export function prevMonthClicked(){
+	return { type: constants.PREV_MONTH_CLICKED}
+}

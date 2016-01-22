@@ -91,7 +91,7 @@ function findByDay(events, day){
 function mapStateToProps(state) {
 	const {events, currentDate, currentUser} = state;
 	const now = currentDate;
-	let monthEvents = getThisMonthEvents(events);
+	let monthEvents = getThisMonthEvents(events, currentDate);
 	return {
 		events: monthEvents,
 		now,

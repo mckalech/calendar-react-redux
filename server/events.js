@@ -12,12 +12,6 @@ router.route('/api/events')
     .post(function (req, res) {
         var event = req.body;
         event.userId = req.user.cid;
-
-        // TO BE REMOVED
-        event.username = req.user.username;
-        event.fullname = req.user.fullname;
-        event.email    = req.user.email;
-
         var id = events.insert(event);
         res.json(events.get(id));
     });

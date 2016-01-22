@@ -12,10 +12,11 @@ const initialState = {
 
 function events(state = initialState.events, action={}) {
 	switch (action.type) {
-        case constants.FETCH_CHIRPS_SUCCESS:
-			return action.chirps;
-		case constants.POST_CHIRP_SUCCESS:
-			return [...state, action.chirp];
+        case constants.FETCH_EVENTS_SUCCESS:
+	        action.events.forEach((e) => e.date = moment(e.date));
+			return action.events;
+		case constants.POST_EVENT_SUCCESS:
+			return [...state, action.event];
 		default:
 			return state;
 	}

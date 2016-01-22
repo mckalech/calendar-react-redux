@@ -15,10 +15,8 @@ ReactDOM.render(
 		<Provider store={store}>
 			<Router history={createBrowserHistory()}>
 				<Route path="/" component={Box}>
-					<IndexRoute component={Events} />
 					<Route path="user/:id" component={Events} />
 				</Route>
-
 			</Router>
 		</Provider>
 	),document.getElementById('content')

@@ -5,3 +5,60 @@
 .b-header{
 	margin-top: 50px;
 }
+.b-table{
+	padding-bottom: 40px;
+
+	table {
+		border-spacing: 0;
+		border: 1px solid #e2e2e2;
+		border-collapse: separate;
+		margin: 20px auto 0;
+	}
+	td {
+		height: 95px;
+		width: 97px;
+		padding: 5px;
+		font-size: 12px;
+		vertical-align: top;
+		border: 1px solid #e2e2e2;
+		overflow: hidden;
+		color: #666666;
+		word-break: break-word;
+
+		& > div {
+			height: 95px;
+			overflow: hidden;
+		}
+
+		&.b-cell {
+			&:hover {
+				border-color: #8abfe9;
+				cursor: pointer;
+				background: #e5f1f9;
+			}
+
+			&.b-cell_today {
+
+				background: #f4f4f4;
+				font-weight: bold;
+			}
+			&.active {
+				background: #e5f1f9;
+				border-color: #8abfe9;
+			}
+
+			&_full {
+				background: #c2e4fe;
+			}
+		}
+		.date {
+			color: #999999;
+			font-weight: 300;
+			font-style: italic;
+			font-size: 13px;
+		}
+		.title {
+			font-weight: bold;
+		}
+	}
+}

@@ -1,3 +1,5 @@
+var webpack = require("webpack");
+
 module.exports = {
 	entry: "./src/js/app.js",
     output: {
@@ -22,5 +24,8 @@ module.exports = {
                 }
 	    	}
 	    ]
-	  }
+    },
+	plugins:[
+		new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/)
+	]
 };

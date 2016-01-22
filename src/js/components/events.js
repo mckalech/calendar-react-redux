@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchEvents } from '../actions';
 import utils from '../utils';
 import moment from 'moment';
+import classNames from 'classNames';
 
 
 class Events extends Component {
@@ -28,12 +29,23 @@ class Events extends Component {
 			for(;j<7;j++,d++) {
 				if (d>daysInMonth){days.push(<td key={j}></td>); continue; }
 				dayText = i===0 ? texts.days[j]+", " + d : d;
+				let info={
+					title:'',
+					text:''
+				};
+				if(findByDay(events, d)){
+					info = findByDay(events, d);
+				}
+				const cn = classNames({
+					'b-cell': true,
+					'active': info.active
+				});
 				days.push(
-					<td className="b-cell" data-date="{d}" key={j}>
+					<td className={cn} data-date="{d}" key={j}>
 						<div>
 							<div className='date'>{dayText}</div>
-							<div className='title'></div>
-							<div className='description'></div>
+							<div className='title'>{info.title}</div>
+							<div className='description'>{info.text}</div>
 						</div>
 					</td>
 				)
@@ -56,19 +68,35 @@ class Events extends Component {
 
 
 function getThisMonthEvents(events, currentDate){
-	return events.filter(function(evnt){
+	events = events.filter(function(evnt){
 		return utils.isInMonth(moment(evnt.date), currentDate);
 	});
+	events.forEach(function(evnt){
+		evnt.day = moment(evnt.date).date();
+		evnt.active = true;
+	});
+	return events;
+}
+
+function findByDay(events, day){
+	const evnt = events.filter((e)=>
+		e.day === day
+	);
+	if(evnt.length) return evnt[0];
+	return false;
+
+
 }
 
 function mapStateToProps(state) {
 	const {events, currentDate, currentUser} = state;
 	const now = currentDate;
+	let monthEvents = getThisMonthEvents(events);
 	return {
-		events: getThisMonthEvents(events),
-		now
+		events: monthEvents,
+		now,
+		findByDay
 	};
 }
-
 
 export default connect(mapStateToProps)(Events);

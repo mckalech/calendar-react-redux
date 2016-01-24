@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchEvents } from '../actions';
 import utils from '../utils';
 import moment from 'moment';
-import classNames from 'classNames';
+import LinkCell from './link-cell';
 
 
 class Events extends Component {
@@ -14,21 +14,18 @@ class Events extends Component {
 		const { dispatch, events, now } = this.props;
 		const weeksInMonth = utils.weeksInMonth(now),
 			firstDayInMonth = utils.firstDayInMonth(now),
-			daysInMonth = utils.daysInMonth(now),
-			texts= utils.texts;
+			daysInMonth = utils.daysInMonth(now);
 		let weeks = [],
-			d=1,
-			dayText;
+			d=1;
 		for(let i=0;i<weeksInMonth;i++){
 			let days = [];
 			let j=0;
 			while (j<firstDayInMonth && i===0) {
-				days.push(<td key={j}><div className='date'>{texts.days[j]}</div></td>);
+				days.push(<td key={j}><div className='date'>{utils.texts.days[j]}</div></td>);
 				j++;
 			}
 			for(;j<7;j++,d++) {
 				if (d>daysInMonth){days.push(<td key={j}></td>); continue; }
-				dayText = i===0 ? texts.days[j]+", " + d : d;
 				let info={
 					title:'',
 					text:''
@@ -36,24 +33,14 @@ class Events extends Component {
 				if(findByDay(events, d)){
 					info = findByDay(events, d);
 				}
-				const cn = classNames({
-					'b-cell': true,
-					'active': info.active
-				});
+				info.date = d;
 				days.push(
-					<td className={cn} data-date="{d}" key={j}>
-						<div>
-							<div className='date'>{dayText}</div>
-							<div className='title'>{info.title}</div>
-							<div className='description'>{info.text}</div>
-						</div>
-					</td>
+					<LinkCell strNum={i} dayInWeekNum={j} {...info} key={j}/>
 				)
 			}
 			weeks.push(<tr key={i}>{days}</tr>)
 		}
 
-		console.log(events);
 		return (
 			<div className='b-table row'>
 				<table>

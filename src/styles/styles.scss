@@ -19,16 +19,18 @@
 	td {
 		height: 95px;
 		width: 97px;
-		padding: 5px;
 		font-size: 12px;
 		vertical-align: top;
+		padding: 0;
 		border: 1px solid #e2e2e2;
 		overflow: hidden;
 		color: #666666;
 		word-break: break-word;
 
-		& > div {
-			height: 95px;
+		& > a {
+			display: block;
+			height: 85px;
+			padding: 5px;
 			overflow: hidden;
 		}
 

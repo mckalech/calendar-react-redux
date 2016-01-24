@@ -5,7 +5,7 @@ import configureStore from './store';
 import {Router, Route, IndexRoute} from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 import Box from './components/box';
-import Events from './components/events';
+import Modal from './components/modal';
 
 
 const store = configureStore();
@@ -15,7 +15,7 @@ ReactDOM.render(
 		<Provider store={store}>
 			<Router history={createBrowserHistory()}>
 				<Route path="/" component={Box}>
-					<Route path="user/:id" component={Events} />
+					<Route path="/:date" component={Modal} />
 				</Route>
 			</Router>
 		</Provider>

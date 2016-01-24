@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import constants from './constants';
 import API from './api';
+import moment from 'moment';
 
 
 function postEventRequest(){
@@ -35,14 +36,26 @@ export function fetchEvents() {
         .then(json =>
 		        dispatch(fetchEventsSuccess(json))
         );
-  };
+    };
 }
 
 
-export function nextMonthClicked(){
-	return { type: constants.NEXT_MONTH_CLICKED}
+export function goToNextMonth(){
+	return function (dispatch, getState) {
+        let mom = moment(getState().currentDate);
+		mom = mom.add(1, 'months');
+		return dispatch(goToDate(mom));
+    };
 }
 
-export function prevMonthClicked(){
-	return { type: constants.PREV_MONTH_CLICKED}
+export function goToPrevMonth(){
+	return function (dispatch, getState) {
+        let mom = moment(getState().currentDate);
+		mom = mom.add(-1, 'months');
+		return dispatch(goToDate(mom));
+    };
+}
+
+export function goToDate(date){
+	return { type: constants.GO_TO_DATE, date}
 }

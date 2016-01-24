@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { nextMonthClicked, prevMonthClicked } from '../actions';
+import { goToNextMonth, goToPrevMonth } from '../actions';
 import Controls from './controls';
 
 
@@ -19,9 +19,9 @@ class Header extends Component {
 	}
 	clickMonthControl(diff){
 		if(diff>0){
-			this.props.dispatch(nextMonthClicked())
+			this.props.dispatch(goToNextMonth())
 		}else{
-			this.props.dispatch(prevMonthClicked())
+			this.props.dispatch(goToPrevMonth())
 		}
 	}
 }

@@ -43,10 +43,8 @@ function currentUser(state = initialState.currentUser, action={}){
 function currentDate(state = initialState.currentDate, action={}){
 	let mom = moment(state);
 	switch (action.type) {
-		case constants.PREV_MONTH_CLICKED:
-			return mom.add(-1, 'months');
-		case constants.NEXT_MONTH_CLICKED:
-			return mom.add(1, 'months');
+		case constants.GO_TO_DATE:
+			return action.date;
 		default:
 			return mom;
 	}

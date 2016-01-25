@@ -13,9 +13,9 @@ class Modal extends Component {
 		let date = this.props.event.date;
 		return (
 			<BodyClassName className='body-blocked'>
-				<div className="b-popup">
+				<div className="b-popup" onClick={(e)=>this.handleOverlayClick(e)}>
 					<div className="b-popup__window">
-						<span className="b-popup__close" onClick={()=>this.props.dispatch(closeModal())}>x</span>
+						<span className="b-popup__close" onClick={()=>this.close()}>x</span>
 						<div className="b-popup__date">{date.format('D MMMM YYYY')}</div>
 						<div className="b-popup__title">
 							<input type="text" placeholder="Заголовок" name="title" />
@@ -32,6 +32,14 @@ class Modal extends Component {
 				</div>
 			</BodyClassName>
 		)
+	}
+	close(){
+		this.props.dispatch(closeModal());
+	}
+	handleOverlayClick(e){
+		if(e.target.classList.contains('b-popup')){
+			this.close()
+		}
 	}
 }
 

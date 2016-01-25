@@ -34938,14 +34938,16 @@
 					{ className: 'body-blocked' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'b-popup' },
+						{ className: 'b-popup', onClick: function onClick(e) {
+								return _this2.handleOverlayClick(e);
+							} },
 						_react2.default.createElement(
 							'div',
 							{ className: 'b-popup__window' },
 							_react2.default.createElement(
 								'span',
 								{ className: 'b-popup__close', onClick: function onClick() {
-										return _this2.props.dispatch((0, _actions.closeModal)());
+										return _this2.close();
 									} },
 								'x'
 							),
@@ -34986,6 +34988,18 @@
 						)
 					)
 				);
+			}
+		}, {
+			key: 'close',
+			value: function close() {
+				this.props.dispatch((0, _actions.closeModal)());
+			}
+		}, {
+			key: 'handleOverlayClick',
+			value: function handleOverlayClick(e) {
+				if (e.target.classList.contains('b-popup')) {
+					this.close();
+				}
 			}
 		}]);
 

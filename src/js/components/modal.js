@@ -6,8 +6,22 @@ import moment from 'moment';
 
 
 class Modal extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			title: props.event.title,
+			text:props.event.text
+		};
+	}
 	componentDidMount(){
-		this.props.dispatch(modalOpened(this.props.event.date));
+		const {dispatch, event} = this.props;
+		dispatch(modalOpened(event.date));
+	}
+	componentWillReceiveProps(nextProps){
+		this.setState({
+			title: nextProps.event.title,
+			text: nextProps.event.text
+		});
 	}
 	render() {
 		let date = this.props.event.date;
@@ -18,10 +32,20 @@ class Modal extends Component {
 						<span className="b-popup__close" onClick={()=>this.close()}>x</span>
 						<div className="b-popup__date">{date.format('D MMMM YYYY')}</div>
 						<div className="b-popup__title">
-							<input type="text" placeholder="Заголовок" name="title" />
+							<input type="text"
+							       placeholder="Заголовок"
+							       name="title"
+							       value={this.state.title}
+							       onChange={(e)=>this.handleInputChange(e)}/>
 						</div>
 						<div className="b-popup__description">
-							<textarea name="description" placeholder="Описание"></textarea>
+							<textarea
+								name="description"
+								placeholder="Описание"
+								value={this.state.text}
+								onChange={(e)=>this.handleTextareaChange(e)}>
+
+							</textarea>
 						</div>
 						<p className="b-popup__warning-wrapper">
 							<span className="b-popup__warning">Для сохранения заполните все поля</span>
@@ -40,6 +64,16 @@ class Modal extends Component {
 		if(e.target.classList.contains('b-popup')){
 			this.close()
 		}
+	}
+	handleInputChange(e){
+		this.setState({
+			title:e.target.value
+		})
+	}
+	handleTextareaChange(e){
+		this.setState({
+			text:e.target.value
+		})
 	}
 }
 

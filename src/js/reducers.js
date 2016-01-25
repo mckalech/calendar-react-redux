@@ -48,7 +48,7 @@ function currentDate(state = initialState.currentDate, action={}){
 		case constants.GO_TO_DATE:
 			return action.date;
 		default:
-			return mom;
+			return state;
 	}
 }
 

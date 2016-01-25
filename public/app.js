@@ -21133,7 +21133,7 @@
 			case _constants2.default.GO_TO_DATE:
 				return action.date;
 			default:
-				return mom;
+				return state;
 		}
 	}
 
@@ -34916,16 +34916,34 @@
 	var Modal = function (_Component) {
 		_inherits(Modal, _Component);
 
-		function Modal() {
+		function Modal(props) {
 			_classCallCheck(this, Modal);
 
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).apply(this, arguments));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).call(this, props));
+
+			_this.state = {
+				title: props.event.title,
+				text: props.event.text
+			};
+			return _this;
 		}
 
 		_createClass(Modal, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				this.props.dispatch((0, _actions.modalOpened)(this.props.event.date));
+				var _props = this.props;
+				var dispatch = _props.dispatch;
+				var event = _props.event;
+
+				dispatch((0, _actions.modalOpened)(event.date));
+			}
+		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextProps) {
+				this.setState({
+					title: nextProps.event.title,
+					text: nextProps.event.text
+				});
 			}
 		}, {
 			key: 'render',
@@ -34959,12 +34977,24 @@
 							_react2.default.createElement(
 								'div',
 								{ className: 'b-popup__title' },
-								_react2.default.createElement('input', { type: 'text', placeholder: 'Заголовок', name: 'title' })
+								_react2.default.createElement('input', { type: 'text',
+									placeholder: 'Заголовок',
+									name: 'title',
+									value: this.state.title,
+									onChange: function onChange(e) {
+										return _this2.handleInputChange(e);
+									} })
 							),
 							_react2.default.createElement(
 								'div',
 								{ className: 'b-popup__description' },
-								_react2.default.createElement('textarea', { name: 'description', placeholder: 'Описание' })
+								_react2.default.createElement('textarea', {
+									name: 'description',
+									placeholder: 'Описание',
+									value: this.state.text,
+									onChange: function onChange(e) {
+										return _this2.handleTextareaChange(e);
+									} })
 							),
 							_react2.default.createElement(
 								'p',
@@ -35000,6 +35030,20 @@
 				if (e.target.classList.contains('b-popup')) {
 					this.close();
 				}
+			}
+		}, {
+			key: 'handleInputChange',
+			value: function handleInputChange(e) {
+				this.setState({
+					title: e.target.value
+				});
+			}
+		}, {
+			key: 'handleTextareaChange',
+			value: function handleTextareaChange(e) {
+				this.setState({
+					text: e.target.value
+				});
 			}
 		}]);
 

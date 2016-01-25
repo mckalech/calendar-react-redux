@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import utils from '../utils';
 import classNames from 'classNames';
 import  { Link } from 'react-router';
+import moment from 'moment';
 
 export default class LinkCell extends Component {
 	render() {
@@ -11,9 +12,9 @@ export default class LinkCell extends Component {
 		});
 		const dayName = this.props.strNum === 0 ? utils.texts.days[this.props.dayInWeekNum]+', ' : '';
 		return(
-			<td className={cn} data-date={this.props.date}>
-				<Link to={"/"+this.props.date}>
-					<div className='date'>{dayName} {this.props.date}</div>
+			<td className={cn} data-date={this.props.shortDate}>
+				<Link to={"/"+this.props.date.format('D-M-YYYY')}>
+					<div className='date'>{dayName} {this.props.shortDate}</div>
 					<div className='title'>{this.props.title}</div>
 					<div className='description'>{this.props.text}</div>
 				</Link>

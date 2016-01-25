@@ -29745,7 +29745,6 @@
 			key: 'render',
 			value: function render() {
 				var _props = this.props;
-				var dispatch = _props.dispatch;
 				var events = _props.events;
 				var now = _props.now;
 
@@ -29775,12 +29774,15 @@
 						}
 						var info = {
 							title: '',
-							text: ''
+							text: '',
+							date: (0, _moment2.default)(now).date(d),
+							shortDate: d
+
 						};
 						if (findByDay(events, d)) {
 							info = findByDay(events, d);
 						}
-						info.date = d;
+						info.shortDate = d;
 						days.push(_react2.default.createElement(_linkCell2.default, _extends({ strNum: i, dayInWeekNum: j }, info, { key: j })));
 					}
 					weeks.push(_react2.default.createElement(
@@ -34231,6 +34233,10 @@
 
 	var _reactRouter = __webpack_require__(186);
 
+	var _moment = __webpack_require__(182);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -34258,16 +34264,16 @@
 				var dayName = this.props.strNum === 0 ? _utils2.default.texts.days[this.props.dayInWeekNum] + ', ' : '';
 				return _react2.default.createElement(
 					'td',
-					{ className: cn, 'data-date': this.props.date },
+					{ className: cn, 'data-date': this.props.shortDate },
 					_react2.default.createElement(
 						_reactRouter.Link,
-						{ to: "/" + this.props.date },
+						{ to: "/" + this.props.date.format('D-M-YYYY') },
 						_react2.default.createElement(
 							'div',
 							{ className: 'date' },
 							dayName,
 							' ',
-							this.props.date
+							this.props.shortDate
 						),
 						_react2.default.createElement(
 							'div',

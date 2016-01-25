@@ -11,7 +11,7 @@ class Events extends Component {
 		this.props.dispatch(fetchEvents());
 	}
 	render() {
-		const { dispatch, events, now } = this.props;
+		const { events, now } = this.props;
 		const weeksInMonth = utils.weeksInMonth(now),
 			firstDayInMonth = utils.firstDayInMonth(now),
 			daysInMonth = utils.daysInMonth(now);
@@ -28,12 +28,15 @@ class Events extends Component {
 				if (d>daysInMonth){days.push(<td key={j}></td>); continue; }
 				let info={
 					title:'',
-					text:''
+					text:'',
+					date:moment(now).date(d),
+					shortDate:d
+
 				};
 				if(findByDay(events, d)){
 					info = findByDay(events, d);
 				}
-				info.date = d;
+				info.shortDate = d;
 				days.push(
 					<LinkCell strNum={i} dayInWeekNum={j} {...info} key={j}/>
 				)

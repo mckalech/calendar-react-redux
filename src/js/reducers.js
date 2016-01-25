@@ -1,6 +1,7 @@
 import constants from './constants';
 import { combineReducers } from 'redux';
 import moment from 'moment';
+moment.locale('ru');
 
 const initialState = {
 	isFetching: false,

@@ -5,7 +5,6 @@ import utils from '../utils';
 import moment from 'moment';
 import LinkCell from './link-cell';
 
-
 class Events extends Component {
 	componentDidMount() {
 		this.props.dispatch(fetchEvents());

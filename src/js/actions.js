@@ -65,9 +65,8 @@ export function goToDate(date){
 
 export function modalOpened(date){
 	return function (dispatch) {
-		let mom = moment(date, 'D-M-YYYY');
-		if(mom.isValid()){
-			dispatch(goToDate(mom));
+		if(date.isValid()){
+			dispatch(goToDate(date));
 		}else{
 			history.replace('/');
 		}

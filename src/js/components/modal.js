@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BodyClassName from 'react-body-classname';
 import {modalOpened, closeModal} from '../actions'
+import moment from 'moment';
 
 
 class Modal extends Component {
 	componentDidMount(){
-		this.props.dispatch(modalOpened(this.props.date));
+		this.props.dispatch(modalOpened(this.props.event.date));
 	}
 	render() {
-		let date = this.props.date;
+		let date = this.props.event.date;
 		return (
 			<BodyClassName className='body-blocked'>
 				<div className="b-popup">
 					<div className="b-popup__window">
 						<span className="b-popup__close" onClick={()=>this.props.dispatch(closeModal())}>x</span>
-						<div className="b-popup__date">{date}</div>
+						<div className="b-popup__date">{date.format('D MMMM YYYY')}</div>
 						<div className="b-popup__title">
 							<input type="text" placeholder="Заголовок" name="title" />
 						</div>
@@ -25,8 +26,8 @@ class Modal extends Component {
 						<p className="b-popup__warning-wrapper">
 							<span className="b-popup__warning">Для сохранения заполните все поля</span>
 						</p>
-						<span className="b-popup__btn b-popup__btn_save">Сохранить</span>
-						<span className="b-popup__btn b-popup__btn_delete">Удалить</span>
+						<span className="button button-primary">Сохранить</span>
+						<span style={{float:"right"}} className="button">Удалить</span>
 					</div>
 				</div>
 			</BodyClassName>
@@ -35,11 +36,17 @@ class Modal extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-	const {events} = state;
-
-
-	return{
-		date: ownProps.params.date
+	const events = state.events.filter( (e)=>
+		e.date.format('D-M-YYYY') === ownProps.params.date
+	);
+	let event = {
+		date:moment(ownProps.params.date, 'D-M-YYYY')
+	};
+	if(events.length){
+		event = events[0];
+	}
+	return {
+		event
 	}
 
 

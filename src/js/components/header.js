@@ -4,6 +4,7 @@ import { goToNextMonth, goToPrevMonth } from '../actions';
 import Controls from './controls';
 
 
+
 class Header extends Component {
 	render() {
 		const { dispatch, now } = this.props;

@@ -13,14 +13,15 @@ function postEventSuccess(event){
 }
 export function postEvent(event) {
 	return function (dispatch) {
-		event.heading = event.heading.trim();
+		event.title = event.title.trim();
 		event.text = event.text.trim();
-		if(event.text === '' || event.heading === '' || !event.date){ return;}
+		if(event.text === '' || event.title === '' || !event.date){ return;}
         dispatch(postEventRequest());
         return API.post('/api/events', event)
-        .then(json =>
-		        dispatch(postEventSuccess(json))
-        );
+        .then(function(json) {
+		        dispatch(closeModal());
+		        return dispatch(postEventSuccess(json));
+	    });
   };
 }
 

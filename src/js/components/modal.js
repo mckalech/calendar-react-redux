@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BodyClassName from 'react-body-classname';
-import {modalOpened, closeModal} from '../actions'
+import {modalOpened, closeModal, postEvent} from '../actions'
 import moment from 'moment';
 
 
@@ -50,7 +50,7 @@ class Modal extends Component {
 						<p className="b-popup__warning-wrapper">
 							<span className="b-popup__warning">Для сохранения заполните все поля</span>
 						</p>
-						<span className="button button-primary">Сохранить</span>
+						<span className="button button-primary" onClick={()=>this.onSave()}>Сохранить</span>
 						<span style={{float:"right"}} className="button">Удалить</span>
 					</div>
 				</div>
@@ -74,6 +74,14 @@ class Modal extends Component {
 		this.setState({
 			text:e.target.value
 		})
+	}
+	onSave(){
+		const event ={
+			title:this.state.title,
+			text:this.state.text,
+			date:this.props.event.date.toDate()
+		};
+		this.props.dispatch(postEvent(event))
 	}
 }
 

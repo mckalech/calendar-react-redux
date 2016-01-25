@@ -21094,6 +21094,7 @@
 				});
 				return action.events;
 			case _constants2.default.POST_EVENT_SUCCESS:
+				action.event.date = (0, _moment2.default)(action.event.date);
 				return [].concat(_toConsumableArray(state), [action.event]);
 			default:
 				return state;
@@ -29897,13 +29898,14 @@
 	}
 	function postEvent(event) {
 		return function (dispatch) {
-			event.heading = event.heading.trim();
+			event.title = event.title.trim();
 			event.text = event.text.trim();
-			if (event.text === '' || event.heading === '' || !event.date) {
+			if (event.text === '' || event.title === '' || !event.date) {
 				return;
 			}
 			dispatch(postEventRequest());
 			return _api2.default.post('/api/events', event).then(function (json) {
+				dispatch(closeModal());
 				return dispatch(postEventSuccess(json));
 			});
 		};
@@ -35007,7 +35009,9 @@
 							),
 							_react2.default.createElement(
 								'span',
-								{ className: 'button button-primary' },
+								{ className: 'button button-primary', onClick: function onClick() {
+										return _this2.onSave();
+									} },
 								'Сохранить'
 							),
 							_react2.default.createElement(
@@ -35044,6 +35048,16 @@
 				this.setState({
 					text: e.target.value
 				});
+			}
+		}, {
+			key: 'onSave',
+			value: function onSave() {
+				var event = {
+					title: this.state.title,
+					text: this.state.text,
+					date: this.props.event.date.toDate()
+				};
+				this.props.dispatch((0, _actions.postEvent)(event));
 			}
 		}]);
 

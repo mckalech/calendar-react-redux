@@ -18,6 +18,7 @@ function events(state = initialState.events, action={}) {
 	        action.events.forEach((e) => e.date = moment(e.date));
 			return action.events;
 		case constants.POST_EVENT_SUCCESS:
+			action.event.date = moment(action.event.date);
 			return [...state, action.event];
 		default:
 			return state;

@@ -71,6 +71,12 @@ export function modalOpened(date){
 		}else{
 			history.replace('/');
 		}
+    };
+}
 
+
+export function closeModal(){
+	return function () {
+		history.push('/');
     };
 }

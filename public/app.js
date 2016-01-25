@@ -29863,6 +29863,7 @@
 	exports.goToPrevMonth = goToPrevMonth;
 	exports.goToDate = goToDate;
 	exports.modalOpened = modalOpened;
+	exports.closeModal = closeModal;
 
 	var _isomorphicFetch = __webpack_require__(239);
 
@@ -29949,6 +29950,12 @@
 			} else {
 				_history2.default.replace('/');
 			}
+		};
+	}
+
+	function closeModal() {
+		return function () {
+			_history2.default.push('/');
 		};
 	}
 
@@ -34918,6 +34925,8 @@
 		}, {
 			key: 'render',
 			value: function render() {
+				var _this2 = this;
+
 				var date = this.props.date;
 				return _react2.default.createElement(
 					_reactBodyClassname2.default,
@@ -34930,7 +34939,9 @@
 							{ className: 'b-popup__window' },
 							_react2.default.createElement(
 								'span',
-								{ className: 'b-popup__close' },
+								{ className: 'b-popup__close', onClick: function onClick() {
+										return _this2.props.dispatch((0, _actions.closeModal)());
+									} },
 								'x'
 							),
 							_react2.default.createElement(

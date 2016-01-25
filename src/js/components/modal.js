@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BodyClassName from 'react-body-classname';
-import {modalOpened} from '../actions'
+import {modalOpened, closeModal} from '../actions'
 
 
 class Modal extends Component {
@@ -14,7 +14,7 @@ class Modal extends Component {
 			<BodyClassName className='body-blocked'>
 				<div className="b-popup">
 					<div className="b-popup__window">
-						<span className="b-popup__close">x</span>
+						<span className="b-popup__close" onClick={()=>this.props.dispatch(closeModal())}>x</span>
 						<div className="b-popup__date">{date}</div>
 						<div className="b-popup__title">
 							<input type="text" placeholder="Заголовок" name="title" />

@@ -1,6 +1,10 @@
 @import './skeleton/css/normalize';
 @import './skeleton/css/skeleton';
 
+.body-blocked{
+	overflow: hidden;
+}
+
 #content{
 	width:763px;
 }

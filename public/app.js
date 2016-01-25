@@ -62,10 +62,6 @@
 
 	var _reactRouter = __webpack_require__(186);
 
-	var _createBrowserHistory = __webpack_require__(235);
-
-	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
-
 	var _box = __webpack_require__(236);
 
 	var _box2 = _interopRequireDefault(_box);
@@ -73,6 +69,10 @@
 	var _modal = __webpack_require__(273);
 
 	var _modal2 = _interopRequireDefault(_modal);
+
+	var _history = __webpack_require__(295);
+
+	var _history2 = _interopRequireDefault(_history);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -83,7 +83,7 @@
 		{ store: store },
 		_react2.default.createElement(
 			_reactRouter.Router,
-			{ history: (0, _createBrowserHistory2.default)() },
+			{ history: _history2.default },
 			_react2.default.createElement(
 				_reactRouter.Route,
 				{ path: '/', component: _box2.default },
@@ -21077,7 +21077,8 @@
 		isFetching: false,
 		events: [],
 		currentUser: window.USER,
-		currentDate: (0, _moment2.default)()
+		currentDate: (0, _moment2.default)(),
+		modalIsOpened: false
 	};
 
 	function events() {
@@ -21160,6 +21161,7 @@
 		FETCH_EVENTS_SUCCESS: 'FETCH_EVENTS_SUCCESS',
 
 		GO_TO_DATE: 'GO_TO_DATE'
+
 	};
 
 /***/ },
@@ -29860,6 +29862,7 @@
 	exports.goToNextMonth = goToNextMonth;
 	exports.goToPrevMonth = goToPrevMonth;
 	exports.goToDate = goToDate;
+	exports.modalOpened = modalOpened;
 
 	var _isomorphicFetch = __webpack_require__(239);
 
@@ -29876,6 +29879,10 @@
 	var _moment = __webpack_require__(182);
 
 	var _moment2 = _interopRequireDefault(_moment);
+
+	var _history = __webpack_require__(295);
+
+	var _history2 = _interopRequireDefault(_history);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29918,7 +29925,7 @@
 		return function (dispatch, getState) {
 			var mom = (0, _moment2.default)(getState().currentDate);
 			mom = mom.add(1, 'months');
-			return dispatch(goToDate(mom));
+			dispatch(goToDate(mom));
 		};
 	}
 
@@ -29926,12 +29933,23 @@
 		return function (dispatch, getState) {
 			var mom = (0, _moment2.default)(getState().currentDate);
 			mom = mom.add(-1, 'months');
-			return dispatch(goToDate(mom));
+			dispatch(goToDate(mom));
 		};
 	}
 
 	function goToDate(date) {
 		return { type: _constants2.default.GO_TO_DATE, date: date };
+	}
+
+	function modalOpened(date) {
+		return function (dispatch) {
+			var mom = (0, _moment2.default)(date, 'D-M-YYYY');
+			if (mom.isValid()) {
+				dispatch(goToDate(mom));
+			} else {
+				_history2.default.replace('/');
+			}
+		};
 	}
 
 /***/ },
@@ -34536,7 +34554,7 @@
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/*! normalize.css v3.0.2 | MIT License | git.io/normalize */\n/**\r\n * 1. Set default font family to sans-serif.\r\n * 2. Prevent iOS text size adjust after orientation change, without disabling\r\n *    user zoom.\r\n */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  -ms-text-size-adjust: 100%;\n  /* 2 */\n  -webkit-text-size-adjust: 100%;\n  /* 2 */ }\n\n/**\r\n * Remove default margin.\r\n */\nbody {\n  margin: 0; }\n\n/* HTML5 display definitions\r\n   ========================================================================== */\n/**\r\n * Correct `block` display not defined for any HTML5 element in IE 8/9.\r\n * Correct `block` display not defined for `details` or `summary` in IE 10/11\r\n * and Firefox.\r\n * Correct `block` display not defined for `main` in IE 11.\r\n */\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nmenu,\nnav,\nsection,\nsummary {\n  display: block; }\n\n/**\r\n * 1. Correct `inline-block` display not defined in IE 8/9.\r\n * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.\r\n */\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\r\n * Prevent modern browsers from displaying `audio` without controls.\r\n * Remove excess height in iOS 5 devices.\r\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\r\n * Address `[hidden]` styling not present in IE 8/9/10.\r\n * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.\r\n */\n[hidden],\ntemplate {\n  display: none; }\n\n/* Links\r\n   ========================================================================== */\n/**\r\n * Remove the gray background color from active links in IE 10.\r\n */\na {\n  background-color: transparent; }\n\n/**\r\n * Improve readability when focused and also mouse hovered in all browsers.\r\n */\na:active,\na:hover {\n  outline: 0; }\n\n/* Text-level semantics\r\n   ========================================================================== */\n/**\r\n * Address styling not present in IE 8/9/10/11, Safari, and Chrome.\r\n */\nabbr[title] {\n  border-bottom: 1px dotted; }\n\n/**\r\n * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.\r\n */\nb,\nstrong {\n  font-weight: bold; }\n\n/**\r\n * Address styling not present in Safari and Chrome.\r\n */\ndfn {\n  font-style: italic; }\n\n/**\r\n * Address variable `h1` font-size and margin within `section` and `article`\r\n * contexts in Firefox 4+, Safari, and Chrome.\r\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/**\r\n * Address styling not present in IE 8/9.\r\n */\nmark {\n  background: #ff0;\n  color: #000; }\n\n/**\r\n * Address inconsistent and variable font size in all browsers.\r\n */\nsmall {\n  font-size: 80%; }\n\n/**\r\n * Prevent `sub` and `sup` affecting `line-height` in all browsers.\r\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsup {\n  top: -0.5em; }\n\nsub {\n  bottom: -0.25em; }\n\n/* Embedded content\r\n   ========================================================================== */\n/**\r\n * Remove border when inside `a` element in IE 8/9/10.\r\n */\nimg {\n  border: 0; }\n\n/**\r\n * Correct overflow not hidden in IE 9/10/11.\r\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Grouping content\r\n   ========================================================================== */\n/**\r\n * Address margin not present in IE 8/9 and Safari.\r\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\r\n * Address differences between Firefox and other browsers.\r\n */\nhr {\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n  height: 0; }\n\n/**\r\n * Contain overflow in all browsers.\r\n */\npre {\n  overflow: auto; }\n\n/**\r\n * Address odd `em`-unit font size rendering in all browsers.\r\n */\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n  font-size: 1em; }\n\n/* Forms\r\n   ========================================================================== */\n/**\r\n * Known limitation: by default, Chrome and Safari on OS X allow very limited\r\n * styling of `select`, unless a `border` property is set.\r\n */\n/**\r\n * 1. Correct color not being inherited.\r\n *    Known issue: affects color of disabled elements.\r\n * 2. Correct font properties not being inherited.\r\n * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.\r\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  color: inherit;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n  margin: 0;\n  /* 3 */ }\n\n/**\r\n * Address `overflow` set to `hidden` in IE 8/9/10/11.\r\n */\nbutton {\n  overflow: visible; }\n\n/**\r\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\r\n * All other form control elements do not inherit `text-transform` values.\r\n * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.\r\n * Correct `select` style inheritance in Firefox.\r\n */\nbutton,\nselect {\n  text-transform: none; }\n\n/**\r\n * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`\r\n *    and `video` controls.\r\n * 2. Correct inability to style clickable `input` types in iOS.\r\n * 3. Improve usability and consistency of cursor style between image-type\r\n *    `input` and others.\r\n */\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */\n  cursor: pointer;\n  /* 3 */ }\n\n/**\r\n * Re-set default cursor for disabled elements.\r\n */\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default; }\n\n/**\r\n * Remove inner padding and border in Firefox 4+.\r\n */\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0; }\n\n/**\r\n * Address Firefox 4+ setting `line-height` on `input` using `!important` in\r\n * the UA stylesheet.\r\n */\ninput {\n  line-height: normal; }\n\n/**\r\n * It's recommended that you don't attempt to style these elements.\r\n * Firefox's implementation doesn't respect box-sizing, padding, or width.\r\n *\r\n * 1. Address box sizing set to `content-box` in IE 8/9/10.\r\n * 2. Remove excess padding in IE 8/9/10.\r\n */\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Fix the cursor style for Chrome's increment/decrement buttons. For certain\r\n * `font-size` values of the `input`, it causes the cursor style of the\r\n * decrement button to change from `default` to `text`.\r\n */\ninput[type=\"number\"]::-webkit-inner-spin-button,\ninput[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\r\n * 1. Address `appearance` set to `searchfield` in Safari and Chrome.\r\n * 2. Address `box-sizing` set to `border-box` in Safari and Chrome\r\n *    (include `-moz` to future-proof).\r\n */\ninput[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  /* 2 */\n  box-sizing: content-box; }\n\n/**\r\n * Remove inner padding and search cancel button in Safari and Chrome on OS X.\r\n * Safari (but not Chrome) clips the cancel button when the search input has\r\n * padding (and `textfield` appearance).\r\n */\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\r\n * Define consistent border, margin, and padding.\r\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\r\n * 1. Correct `color` not being inherited in IE 8/9/10/11.\r\n * 2. Remove padding so people aren't caught out if they zero out fieldsets.\r\n */\nlegend {\n  border: 0;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Remove default vertical scrollbar in IE 8/9/10/11.\r\n */\ntextarea {\n  overflow: auto; }\n\n/**\r\n * Don't inherit the `font-weight` (applied by a rule above).\r\n * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.\r\n */\noptgroup {\n  font-weight: bold; }\n\n/* Tables\r\n   ========================================================================== */\n/**\r\n * Remove most spacing between table cells.\r\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\ntd,\nth {\n  padding: 0; }\n\n/*\r\n* Skeleton V2.0.4\r\n* Copyright 2014, Dave Gamache\r\n* www.getskeleton.com\r\n* Free to use under the MIT license.\r\n* http://www.opensource.org/licenses/mit-license.php\r\n* 12/29/2014\r\n*/\n/* Table of contents\r\n––––––––––––––––––––––––––––––––––––––––––––––––––\r\n- Grid\r\n- Base Styles\r\n- Typography\r\n- Links\r\n- Buttons\r\n- Forms\r\n- Lists\r\n- Code\r\n- Tables\r\n- Spacing\r\n- Utilities\r\n- Clearing\r\n- Media Queries\r\n*/\n/* Grid\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.container {\n  position: relative;\n  width: 100%;\n  max-width: 960px;\n  margin: 0 auto;\n  padding: 0 20px;\n  box-sizing: border-box; }\n\n.column,\n.columns {\n  width: 100%;\n  float: left;\n  box-sizing: border-box; }\n\n/* For devices larger than 400px */\n@media (min-width: 400px) {\n  .container {\n    width: 85%;\n    padding: 0; } }\n\n/* For devices larger than 550px */\n@media (min-width: 550px) {\n  .container {\n    width: 80%; }\n  .column,\n  .columns {\n    margin-left: 4%; }\n  .column:first-child,\n  .columns:first-child {\n    margin-left: 0; }\n  .one.column,\n  .one.columns {\n    width: 4.66666666667%; }\n  .two.columns {\n    width: 13.3333333333%; }\n  .three.columns {\n    width: 22%; }\n  .four.columns {\n    width: 30.6666666667%; }\n  .five.columns {\n    width: 39.3333333333%; }\n  .six.columns {\n    width: 48%; }\n  .seven.columns {\n    width: 56.6666666667%; }\n  .eight.columns {\n    width: 65.3333333333%; }\n  .nine.columns {\n    width: 74.0%; }\n  .ten.columns {\n    width: 82.6666666667%; }\n  .eleven.columns {\n    width: 91.3333333333%; }\n  .twelve.columns {\n    width: 100%;\n    margin-left: 0; }\n  .one-third.column {\n    width: 30.6666666667%; }\n  .two-thirds.column {\n    width: 65.3333333333%; }\n  .one-half.column {\n    width: 48%; }\n  /* Offsets */\n  .offset-by-one.column,\n  .offset-by-one.columns {\n    margin-left: 8.66666666667%; }\n  .offset-by-two.column,\n  .offset-by-two.columns {\n    margin-left: 17.3333333333%; }\n  .offset-by-three.column,\n  .offset-by-three.columns {\n    margin-left: 26%; }\n  .offset-by-four.column,\n  .offset-by-four.columns {\n    margin-left: 34.6666666667%; }\n  .offset-by-five.column,\n  .offset-by-five.columns {\n    margin-left: 43.3333333333%; }\n  .offset-by-six.column,\n  .offset-by-six.columns {\n    margin-left: 52%; }\n  .offset-by-seven.column,\n  .offset-by-seven.columns {\n    margin-left: 60.6666666667%; }\n  .offset-by-eight.column,\n  .offset-by-eight.columns {\n    margin-left: 69.3333333333%; }\n  .offset-by-nine.column,\n  .offset-by-nine.columns {\n    margin-left: 78.0%; }\n  .offset-by-ten.column,\n  .offset-by-ten.columns {\n    margin-left: 86.6666666667%; }\n  .offset-by-eleven.column,\n  .offset-by-eleven.columns {\n    margin-left: 95.3333333333%; }\n  .offset-by-one-third.column,\n  .offset-by-one-third.columns {\n    margin-left: 34.6666666667%; }\n  .offset-by-two-thirds.column,\n  .offset-by-two-thirds.columns {\n    margin-left: 69.3333333333%; }\n  .offset-by-one-half.column,\n  .offset-by-one-half.columns {\n    margin-left: 52%; } }\n\n/* Base Styles\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/* NOTE\r\nhtml is set to 62.5% so that all the REM measurements throughout Skeleton\r\nare based on 10px sizing. So basically 1.5rem = 15px :) */\nhtml {\n  font-size: 62.5%; }\n\nbody {\n  font-size: 1.5em;\n  /* currently ems cause chrome bug misinterpreting rems on body element */\n  line-height: 1.6;\n  font-weight: 400;\n  font-family: \"Raleway\", \"HelveticaNeue\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  color: #222; }\n\n/* Typography\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nh1, h2, h3, h4, h5, h6 {\n  margin-top: 0;\n  margin-bottom: 2rem;\n  font-weight: 300; }\n\nh1 {\n  font-size: 4.0rem;\n  line-height: 1.2;\n  letter-spacing: -.1rem; }\n\nh2 {\n  font-size: 3.6rem;\n  line-height: 1.25;\n  letter-spacing: -.1rem; }\n\nh3 {\n  font-size: 3.0rem;\n  line-height: 1.3;\n  letter-spacing: -.1rem; }\n\nh4 {\n  font-size: 2.4rem;\n  line-height: 1.35;\n  letter-spacing: -.08rem; }\n\nh5 {\n  font-size: 1.8rem;\n  line-height: 1.5;\n  letter-spacing: -.05rem; }\n\nh6 {\n  font-size: 1.5rem;\n  line-height: 1.6;\n  letter-spacing: 0; }\n\n/* Larger than phablet */\n@media (min-width: 550px) {\n  h1 {\n    font-size: 5.0rem; }\n  h2 {\n    font-size: 4.2rem; }\n  h3 {\n    font-size: 3.6rem; }\n  h4 {\n    font-size: 3.0rem; }\n  h5 {\n    font-size: 2.4rem; }\n  h6 {\n    font-size: 1.5rem; } }\n\np {\n  margin-top: 0; }\n\n/* Links\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\na {\n  color: #1EAEDB; }\n\na:hover {\n  color: #0FA0CE; }\n\n/* Buttons\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.button,\nbutton,\ninput[type=\"submit\"],\ninput[type=\"reset\"],\ninput[type=\"button\"] {\n  display: inline-block;\n  height: 38px;\n  padding: 0 30px;\n  color: #555;\n  text-align: center;\n  font-size: 11px;\n  font-weight: 600;\n  line-height: 38px;\n  letter-spacing: .1rem;\n  text-transform: uppercase;\n  text-decoration: none;\n  white-space: nowrap;\n  background-color: transparent;\n  border-radius: 4px;\n  border: 1px solid #bbb;\n  cursor: pointer;\n  box-sizing: border-box; }\n\n.button:hover,\nbutton:hover,\ninput[type=\"submit\"]:hover,\ninput[type=\"reset\"]:hover,\ninput[type=\"button\"]:hover,\n.button:focus,\nbutton:focus,\ninput[type=\"submit\"]:focus,\ninput[type=\"reset\"]:focus,\ninput[type=\"button\"]:focus {\n  color: #333;\n  border-color: #888;\n  outline: 0; }\n\n.button.button-primary,\nbutton.button-primary,\ninput[type=\"submit\"].button-primary,\ninput[type=\"reset\"].button-primary,\ninput[type=\"button\"].button-primary {\n  color: #FFF;\n  background-color: #33C3F0;\n  border-color: #33C3F0; }\n\n.button.button-primary:hover,\nbutton.button-primary:hover,\ninput[type=\"submit\"].button-primary:hover,\ninput[type=\"reset\"].button-primary:hover,\ninput[type=\"button\"].button-primary:hover,\n.button.button-primary:focus,\nbutton.button-primary:focus,\ninput[type=\"submit\"].button-primary:focus,\ninput[type=\"reset\"].button-primary:focus,\ninput[type=\"button\"].button-primary:focus {\n  color: #FFF;\n  background-color: #1EAEDB;\n  border-color: #1EAEDB; }\n\n/* Forms\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\ninput[type=\"email\"],\ninput[type=\"number\"],\ninput[type=\"search\"],\ninput[type=\"text\"],\ninput[type=\"tel\"],\ninput[type=\"url\"],\ninput[type=\"password\"],\ntextarea,\nselect {\n  height: 38px;\n  padding: 6px 10px;\n  /* The 6px vertically centers text on FF, ignored by Webkit */\n  background-color: #fff;\n  border: 1px solid #D1D1D1;\n  border-radius: 4px;\n  box-shadow: none;\n  box-sizing: border-box; }\n\n/* Removes awkward default styles on some inputs for iOS */\ninput[type=\"email\"],\ninput[type=\"number\"],\ninput[type=\"search\"],\ninput[type=\"text\"],\ninput[type=\"tel\"],\ninput[type=\"url\"],\ninput[type=\"password\"],\ntextarea {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  appearance: none; }\n\ntextarea {\n  min-height: 65px;\n  padding-top: 6px;\n  padding-bottom: 6px; }\n\ninput[type=\"email\"]:focus,\ninput[type=\"number\"]:focus,\ninput[type=\"search\"]:focus,\ninput[type=\"text\"]:focus,\ninput[type=\"tel\"]:focus,\ninput[type=\"url\"]:focus,\ninput[type=\"password\"]:focus,\ntextarea:focus,\nselect:focus {\n  border: 1px solid #33C3F0;\n  outline: 0; }\n\nlabel,\nlegend {\n  display: block;\n  margin-bottom: .5rem;\n  font-weight: 600; }\n\nfieldset {\n  padding: 0;\n  border-width: 0; }\n\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  display: inline; }\n\nlabel > .label-body {\n  display: inline-block;\n  margin-left: .5rem;\n  font-weight: normal; }\n\n/* Lists\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nul {\n  list-style: circle inside; }\n\nol {\n  list-style: decimal inside; }\n\nol, ul {\n  padding-left: 0;\n  margin-top: 0; }\n\nul ul,\nul ol,\nol ol,\nol ul {\n  margin: 1.5rem 0 1.5rem 3rem;\n  font-size: 90%; }\n\nli {\n  margin-bottom: 1rem; }\n\n/* Code\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\ncode {\n  padding: .2rem .5rem;\n  margin: 0 .2rem;\n  font-size: 90%;\n  white-space: nowrap;\n  background: #F1F1F1;\n  border: 1px solid #E1E1E1;\n  border-radius: 4px; }\n\npre > code {\n  display: block;\n  padding: 1rem 1.5rem;\n  white-space: pre; }\n\n/* Tables\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nth,\ntd {\n  padding: 12px 15px;\n  text-align: left;\n  border-bottom: 1px solid #E1E1E1; }\n\nth:first-child,\ntd:first-child {\n  padding-left: 0; }\n\nth:last-child,\ntd:last-child {\n  padding-right: 0; }\n\n/* Spacing\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nbutton,\n.button {\n  margin-bottom: 1rem; }\n\ninput,\ntextarea,\nselect,\nfieldset {\n  margin-bottom: 1.5rem; }\n\npre,\nblockquote,\ndl,\nfigure,\ntable,\np,\nul,\nol,\nform {\n  margin-bottom: 2.5rem; }\n\n/* Utilities\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.u-full-width {\n  width: 100%;\n  box-sizing: border-box; }\n\n.u-max-full-width {\n  max-width: 100%;\n  box-sizing: border-box; }\n\n.u-pull-right {\n  float: right; }\n\n.u-pull-left {\n  float: left; }\n\n/* Misc\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nhr {\n  margin-top: 3rem;\n  margin-bottom: 3.5rem;\n  border-width: 0;\n  border-top: 1px solid #E1E1E1; }\n\n/* Clearing\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/* Self Clearing Goodness */\n.container:after,\n.row:after,\n.u-cf {\n  content: \"\";\n  display: table;\n  clear: both; }\n\n/* Media Queries\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/*\r\nNote: The best way to structure the use of media queries is to create the queries\r\nnear the relevant code. For example, if you wanted to change the styles for buttons\r\non small devices, paste the mobile query code up in the buttons section and style it\r\nthere.\r\n*/\n/* Larger than mobile */\n/* Larger than phablet (also point when grid becomes active) */\n/* Larger than tablet */\n/* Larger than desktop */\n/* Larger than Desktop HD */\n#content {\n  width: 763px; }\n\n.b-header {\n  margin-top: 50px; }\n\n.b-table {\n  padding-bottom: 40px; }\n  .b-table table {\n    border-spacing: 0;\n    border: 1px solid #e2e2e2;\n    border-collapse: separate;\n    margin: 20px auto 0; }\n  .b-table td {\n    height: 95px;\n    width: 97px;\n    font-size: 12px;\n    vertical-align: top;\n    padding: 0;\n    border: 1px solid #e2e2e2;\n    overflow: hidden;\n    color: #666666;\n    word-break: break-word; }\n    .b-table td > a {\n      display: block;\n      height: 85px;\n      padding: 5px;\n      overflow: hidden; }\n    .b-table td.b-cell:hover {\n      border-color: #8abfe9;\n      cursor: pointer;\n      background: #e5f1f9; }\n    .b-table td.b-cell.b-cell_today {\n      background: #f4f4f4;\n      font-weight: bold; }\n    .b-table td.b-cell.active {\n      background: #e5f1f9;\n      border-color: #8abfe9; }\n    .b-table td.b-cell_full {\n      background: #c2e4fe; }\n    .b-table td .date {\n      color: #999999;\n      font-weight: 300;\n      font-style: italic;\n      font-size: 13px; }\n    .b-table td .title {\n      font-weight: bold; }\n\n.b-popup {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  overflow: auto;\n  background: rgba(100, 100, 100, 0.75); }\n  .b-popup .b-popup__window {\n    z-index: 2;\n    margin: 50px auto;\n    border-radius: 3px;\n    overflow: hidden;\n    background: #fff;\n    position: relative;\n    width: 250px;\n    height: 350px;\n    padding: 20px; }\n    .b-popup .b-popup__window > div {\n      margin: 10px 0; }\n    .b-popup .b-popup__window .b-popup__close {\n      position: absolute;\n      top: 10px;\n      right: 10px;\n      cursor: pointer;\n      line-height: 12px;\n      font-size: 13px; }\n    .b-popup .b-popup__window .b-popup__date {\n      font-size: 15px;\n      height: 20px;\n      font-weight: 300; }\n    .b-popup .b-popup__window input[type=\"text\"], .b-popup .b-popup__window textarea {\n      display: block;\n      border: 1px solid #d2d2d2;\n      border-radius: 3px;\n      outline: none;\n      line-height: 25px;\n      box-shadow: inset 1px 2px 2px #a5a5a5; }\n    .b-popup .b-popup__window input[type=\"text\"] {\n      height: 25px;\n      width: 246px;\n      padding: 0 0 0 2px; }\n    .b-popup .b-popup__window textarea {\n      height: 200px;\n      resize: none;\n      width: 244px;\n      padding: 2px; }\n    .b-popup .b-popup__window .b-popup__warning-wrapper {\n      height: 25px;\n      margin: 0; }\n    .b-popup .b-popup__window .b-popup__warning {\n      color: red;\n      display: none;\n      font-size: 11px; }\n      .b-popup .b-popup__window .b-popup__warning.visible {\n        display: block; }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/*! normalize.css v3.0.2 | MIT License | git.io/normalize */\n/**\r\n * 1. Set default font family to sans-serif.\r\n * 2. Prevent iOS text size adjust after orientation change, without disabling\r\n *    user zoom.\r\n */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  -ms-text-size-adjust: 100%;\n  /* 2 */\n  -webkit-text-size-adjust: 100%;\n  /* 2 */ }\n\n/**\r\n * Remove default margin.\r\n */\nbody {\n  margin: 0; }\n\n/* HTML5 display definitions\r\n   ========================================================================== */\n/**\r\n * Correct `block` display not defined for any HTML5 element in IE 8/9.\r\n * Correct `block` display not defined for `details` or `summary` in IE 10/11\r\n * and Firefox.\r\n * Correct `block` display not defined for `main` in IE 11.\r\n */\narticle,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nmain,\nmenu,\nnav,\nsection,\nsummary {\n  display: block; }\n\n/**\r\n * 1. Correct `inline-block` display not defined in IE 8/9.\r\n * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.\r\n */\naudio,\ncanvas,\nprogress,\nvideo {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\r\n * Prevent modern browsers from displaying `audio` without controls.\r\n * Remove excess height in iOS 5 devices.\r\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\r\n * Address `[hidden]` styling not present in IE 8/9/10.\r\n * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.\r\n */\n[hidden],\ntemplate {\n  display: none; }\n\n/* Links\r\n   ========================================================================== */\n/**\r\n * Remove the gray background color from active links in IE 10.\r\n */\na {\n  background-color: transparent; }\n\n/**\r\n * Improve readability when focused and also mouse hovered in all browsers.\r\n */\na:active,\na:hover {\n  outline: 0; }\n\n/* Text-level semantics\r\n   ========================================================================== */\n/**\r\n * Address styling not present in IE 8/9/10/11, Safari, and Chrome.\r\n */\nabbr[title] {\n  border-bottom: 1px dotted; }\n\n/**\r\n * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.\r\n */\nb,\nstrong {\n  font-weight: bold; }\n\n/**\r\n * Address styling not present in Safari and Chrome.\r\n */\ndfn {\n  font-style: italic; }\n\n/**\r\n * Address variable `h1` font-size and margin within `section` and `article`\r\n * contexts in Firefox 4+, Safari, and Chrome.\r\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/**\r\n * Address styling not present in IE 8/9.\r\n */\nmark {\n  background: #ff0;\n  color: #000; }\n\n/**\r\n * Address inconsistent and variable font size in all browsers.\r\n */\nsmall {\n  font-size: 80%; }\n\n/**\r\n * Prevent `sub` and `sup` affecting `line-height` in all browsers.\r\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsup {\n  top: -0.5em; }\n\nsub {\n  bottom: -0.25em; }\n\n/* Embedded content\r\n   ========================================================================== */\n/**\r\n * Remove border when inside `a` element in IE 8/9/10.\r\n */\nimg {\n  border: 0; }\n\n/**\r\n * Correct overflow not hidden in IE 9/10/11.\r\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Grouping content\r\n   ========================================================================== */\n/**\r\n * Address margin not present in IE 8/9 and Safari.\r\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\r\n * Address differences between Firefox and other browsers.\r\n */\nhr {\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n  height: 0; }\n\n/**\r\n * Contain overflow in all browsers.\r\n */\npre {\n  overflow: auto; }\n\n/**\r\n * Address odd `em`-unit font size rendering in all browsers.\r\n */\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, monospace;\n  font-size: 1em; }\n\n/* Forms\r\n   ========================================================================== */\n/**\r\n * Known limitation: by default, Chrome and Safari on OS X allow very limited\r\n * styling of `select`, unless a `border` property is set.\r\n */\n/**\r\n * 1. Correct color not being inherited.\r\n *    Known issue: affects color of disabled elements.\r\n * 2. Correct font properties not being inherited.\r\n * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.\r\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  color: inherit;\n  /* 1 */\n  font: inherit;\n  /* 2 */\n  margin: 0;\n  /* 3 */ }\n\n/**\r\n * Address `overflow` set to `hidden` in IE 8/9/10/11.\r\n */\nbutton {\n  overflow: visible; }\n\n/**\r\n * Address inconsistent `text-transform` inheritance for `button` and `select`.\r\n * All other form control elements do not inherit `text-transform` values.\r\n * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.\r\n * Correct `select` style inheritance in Firefox.\r\n */\nbutton,\nselect {\n  text-transform: none; }\n\n/**\r\n * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`\r\n *    and `video` controls.\r\n * 2. Correct inability to style clickable `input` types in iOS.\r\n * 3. Improve usability and consistency of cursor style between image-type\r\n *    `input` and others.\r\n */\nbutton,\nhtml input[type=\"button\"],\ninput[type=\"reset\"],\ninput[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */\n  cursor: pointer;\n  /* 3 */ }\n\n/**\r\n * Re-set default cursor for disabled elements.\r\n */\nbutton[disabled],\nhtml input[disabled] {\n  cursor: default; }\n\n/**\r\n * Remove inner padding and border in Firefox 4+.\r\n */\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0; }\n\n/**\r\n * Address Firefox 4+ setting `line-height` on `input` using `!important` in\r\n * the UA stylesheet.\r\n */\ninput {\n  line-height: normal; }\n\n/**\r\n * It's recommended that you don't attempt to style these elements.\r\n * Firefox's implementation doesn't respect box-sizing, padding, or width.\r\n *\r\n * 1. Address box sizing set to `content-box` in IE 8/9/10.\r\n * 2. Remove excess padding in IE 8/9/10.\r\n */\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Fix the cursor style for Chrome's increment/decrement buttons. For certain\r\n * `font-size` values of the `input`, it causes the cursor style of the\r\n * decrement button to change from `default` to `text`.\r\n */\ninput[type=\"number\"]::-webkit-inner-spin-button,\ninput[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\r\n * 1. Address `appearance` set to `searchfield` in Safari and Chrome.\r\n * 2. Address `box-sizing` set to `border-box` in Safari and Chrome\r\n *    (include `-moz` to future-proof).\r\n */\ninput[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  /* 2 */\n  box-sizing: content-box; }\n\n/**\r\n * Remove inner padding and search cancel button in Safari and Chrome on OS X.\r\n * Safari (but not Chrome) clips the cancel button when the search input has\r\n * padding (and `textfield` appearance).\r\n */\ninput[type=\"search\"]::-webkit-search-cancel-button,\ninput[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\r\n * Define consistent border, margin, and padding.\r\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\r\n * 1. Correct `color` not being inherited in IE 8/9/10/11.\r\n * 2. Remove padding so people aren't caught out if they zero out fieldsets.\r\n */\nlegend {\n  border: 0;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\r\n * Remove default vertical scrollbar in IE 8/9/10/11.\r\n */\ntextarea {\n  overflow: auto; }\n\n/**\r\n * Don't inherit the `font-weight` (applied by a rule above).\r\n * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.\r\n */\noptgroup {\n  font-weight: bold; }\n\n/* Tables\r\n   ========================================================================== */\n/**\r\n * Remove most spacing between table cells.\r\n */\ntable {\n  border-collapse: collapse;\n  border-spacing: 0; }\n\ntd,\nth {\n  padding: 0; }\n\n/*\r\n* Skeleton V2.0.4\r\n* Copyright 2014, Dave Gamache\r\n* www.getskeleton.com\r\n* Free to use under the MIT license.\r\n* http://www.opensource.org/licenses/mit-license.php\r\n* 12/29/2014\r\n*/\n/* Table of contents\r\n––––––––––––––––––––––––––––––––––––––––––––––––––\r\n- Grid\r\n- Base Styles\r\n- Typography\r\n- Links\r\n- Buttons\r\n- Forms\r\n- Lists\r\n- Code\r\n- Tables\r\n- Spacing\r\n- Utilities\r\n- Clearing\r\n- Media Queries\r\n*/\n/* Grid\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.container {\n  position: relative;\n  width: 100%;\n  max-width: 960px;\n  margin: 0 auto;\n  padding: 0 20px;\n  box-sizing: border-box; }\n\n.column,\n.columns {\n  width: 100%;\n  float: left;\n  box-sizing: border-box; }\n\n/* For devices larger than 400px */\n@media (min-width: 400px) {\n  .container {\n    width: 85%;\n    padding: 0; } }\n\n/* For devices larger than 550px */\n@media (min-width: 550px) {\n  .container {\n    width: 80%; }\n  .column,\n  .columns {\n    margin-left: 4%; }\n  .column:first-child,\n  .columns:first-child {\n    margin-left: 0; }\n  .one.column,\n  .one.columns {\n    width: 4.66666666667%; }\n  .two.columns {\n    width: 13.3333333333%; }\n  .three.columns {\n    width: 22%; }\n  .four.columns {\n    width: 30.6666666667%; }\n  .five.columns {\n    width: 39.3333333333%; }\n  .six.columns {\n    width: 48%; }\n  .seven.columns {\n    width: 56.6666666667%; }\n  .eight.columns {\n    width: 65.3333333333%; }\n  .nine.columns {\n    width: 74.0%; }\n  .ten.columns {\n    width: 82.6666666667%; }\n  .eleven.columns {\n    width: 91.3333333333%; }\n  .twelve.columns {\n    width: 100%;\n    margin-left: 0; }\n  .one-third.column {\n    width: 30.6666666667%; }\n  .two-thirds.column {\n    width: 65.3333333333%; }\n  .one-half.column {\n    width: 48%; }\n  /* Offsets */\n  .offset-by-one.column,\n  .offset-by-one.columns {\n    margin-left: 8.66666666667%; }\n  .offset-by-two.column,\n  .offset-by-two.columns {\n    margin-left: 17.3333333333%; }\n  .offset-by-three.column,\n  .offset-by-three.columns {\n    margin-left: 26%; }\n  .offset-by-four.column,\n  .offset-by-four.columns {\n    margin-left: 34.6666666667%; }\n  .offset-by-five.column,\n  .offset-by-five.columns {\n    margin-left: 43.3333333333%; }\n  .offset-by-six.column,\n  .offset-by-six.columns {\n    margin-left: 52%; }\n  .offset-by-seven.column,\n  .offset-by-seven.columns {\n    margin-left: 60.6666666667%; }\n  .offset-by-eight.column,\n  .offset-by-eight.columns {\n    margin-left: 69.3333333333%; }\n  .offset-by-nine.column,\n  .offset-by-nine.columns {\n    margin-left: 78.0%; }\n  .offset-by-ten.column,\n  .offset-by-ten.columns {\n    margin-left: 86.6666666667%; }\n  .offset-by-eleven.column,\n  .offset-by-eleven.columns {\n    margin-left: 95.3333333333%; }\n  .offset-by-one-third.column,\n  .offset-by-one-third.columns {\n    margin-left: 34.6666666667%; }\n  .offset-by-two-thirds.column,\n  .offset-by-two-thirds.columns {\n    margin-left: 69.3333333333%; }\n  .offset-by-one-half.column,\n  .offset-by-one-half.columns {\n    margin-left: 52%; } }\n\n/* Base Styles\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/* NOTE\r\nhtml is set to 62.5% so that all the REM measurements throughout Skeleton\r\nare based on 10px sizing. So basically 1.5rem = 15px :) */\nhtml {\n  font-size: 62.5%; }\n\nbody {\n  font-size: 1.5em;\n  /* currently ems cause chrome bug misinterpreting rems on body element */\n  line-height: 1.6;\n  font-weight: 400;\n  font-family: \"Raleway\", \"HelveticaNeue\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  color: #222; }\n\n/* Typography\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nh1, h2, h3, h4, h5, h6 {\n  margin-top: 0;\n  margin-bottom: 2rem;\n  font-weight: 300; }\n\nh1 {\n  font-size: 4.0rem;\n  line-height: 1.2;\n  letter-spacing: -.1rem; }\n\nh2 {\n  font-size: 3.6rem;\n  line-height: 1.25;\n  letter-spacing: -.1rem; }\n\nh3 {\n  font-size: 3.0rem;\n  line-height: 1.3;\n  letter-spacing: -.1rem; }\n\nh4 {\n  font-size: 2.4rem;\n  line-height: 1.35;\n  letter-spacing: -.08rem; }\n\nh5 {\n  font-size: 1.8rem;\n  line-height: 1.5;\n  letter-spacing: -.05rem; }\n\nh6 {\n  font-size: 1.5rem;\n  line-height: 1.6;\n  letter-spacing: 0; }\n\n/* Larger than phablet */\n@media (min-width: 550px) {\n  h1 {\n    font-size: 5.0rem; }\n  h2 {\n    font-size: 4.2rem; }\n  h3 {\n    font-size: 3.6rem; }\n  h4 {\n    font-size: 3.0rem; }\n  h5 {\n    font-size: 2.4rem; }\n  h6 {\n    font-size: 1.5rem; } }\n\np {\n  margin-top: 0; }\n\n/* Links\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\na {\n  color: #1EAEDB; }\n\na:hover {\n  color: #0FA0CE; }\n\n/* Buttons\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.button,\nbutton,\ninput[type=\"submit\"],\ninput[type=\"reset\"],\ninput[type=\"button\"] {\n  display: inline-block;\n  height: 38px;\n  padding: 0 30px;\n  color: #555;\n  text-align: center;\n  font-size: 11px;\n  font-weight: 600;\n  line-height: 38px;\n  letter-spacing: .1rem;\n  text-transform: uppercase;\n  text-decoration: none;\n  white-space: nowrap;\n  background-color: transparent;\n  border-radius: 4px;\n  border: 1px solid #bbb;\n  cursor: pointer;\n  box-sizing: border-box; }\n\n.button:hover,\nbutton:hover,\ninput[type=\"submit\"]:hover,\ninput[type=\"reset\"]:hover,\ninput[type=\"button\"]:hover,\n.button:focus,\nbutton:focus,\ninput[type=\"submit\"]:focus,\ninput[type=\"reset\"]:focus,\ninput[type=\"button\"]:focus {\n  color: #333;\n  border-color: #888;\n  outline: 0; }\n\n.button.button-primary,\nbutton.button-primary,\ninput[type=\"submit\"].button-primary,\ninput[type=\"reset\"].button-primary,\ninput[type=\"button\"].button-primary {\n  color: #FFF;\n  background-color: #33C3F0;\n  border-color: #33C3F0; }\n\n.button.button-primary:hover,\nbutton.button-primary:hover,\ninput[type=\"submit\"].button-primary:hover,\ninput[type=\"reset\"].button-primary:hover,\ninput[type=\"button\"].button-primary:hover,\n.button.button-primary:focus,\nbutton.button-primary:focus,\ninput[type=\"submit\"].button-primary:focus,\ninput[type=\"reset\"].button-primary:focus,\ninput[type=\"button\"].button-primary:focus {\n  color: #FFF;\n  background-color: #1EAEDB;\n  border-color: #1EAEDB; }\n\n/* Forms\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\ninput[type=\"email\"],\ninput[type=\"number\"],\ninput[type=\"search\"],\ninput[type=\"text\"],\ninput[type=\"tel\"],\ninput[type=\"url\"],\ninput[type=\"password\"],\ntextarea,\nselect {\n  height: 38px;\n  padding: 6px 10px;\n  /* The 6px vertically centers text on FF, ignored by Webkit */\n  background-color: #fff;\n  border: 1px solid #D1D1D1;\n  border-radius: 4px;\n  box-shadow: none;\n  box-sizing: border-box; }\n\n/* Removes awkward default styles on some inputs for iOS */\ninput[type=\"email\"],\ninput[type=\"number\"],\ninput[type=\"search\"],\ninput[type=\"text\"],\ninput[type=\"tel\"],\ninput[type=\"url\"],\ninput[type=\"password\"],\ntextarea {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  appearance: none; }\n\ntextarea {\n  min-height: 65px;\n  padding-top: 6px;\n  padding-bottom: 6px; }\n\ninput[type=\"email\"]:focus,\ninput[type=\"number\"]:focus,\ninput[type=\"search\"]:focus,\ninput[type=\"text\"]:focus,\ninput[type=\"tel\"]:focus,\ninput[type=\"url\"]:focus,\ninput[type=\"password\"]:focus,\ntextarea:focus,\nselect:focus {\n  border: 1px solid #33C3F0;\n  outline: 0; }\n\nlabel,\nlegend {\n  display: block;\n  margin-bottom: .5rem;\n  font-weight: 600; }\n\nfieldset {\n  padding: 0;\n  border-width: 0; }\n\ninput[type=\"checkbox\"],\ninput[type=\"radio\"] {\n  display: inline; }\n\nlabel > .label-body {\n  display: inline-block;\n  margin-left: .5rem;\n  font-weight: normal; }\n\n/* Lists\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nul {\n  list-style: circle inside; }\n\nol {\n  list-style: decimal inside; }\n\nol, ul {\n  padding-left: 0;\n  margin-top: 0; }\n\nul ul,\nul ol,\nol ol,\nol ul {\n  margin: 1.5rem 0 1.5rem 3rem;\n  font-size: 90%; }\n\nli {\n  margin-bottom: 1rem; }\n\n/* Code\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\ncode {\n  padding: .2rem .5rem;\n  margin: 0 .2rem;\n  font-size: 90%;\n  white-space: nowrap;\n  background: #F1F1F1;\n  border: 1px solid #E1E1E1;\n  border-radius: 4px; }\n\npre > code {\n  display: block;\n  padding: 1rem 1.5rem;\n  white-space: pre; }\n\n/* Tables\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nth,\ntd {\n  padding: 12px 15px;\n  text-align: left;\n  border-bottom: 1px solid #E1E1E1; }\n\nth:first-child,\ntd:first-child {\n  padding-left: 0; }\n\nth:last-child,\ntd:last-child {\n  padding-right: 0; }\n\n/* Spacing\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nbutton,\n.button {\n  margin-bottom: 1rem; }\n\ninput,\ntextarea,\nselect,\nfieldset {\n  margin-bottom: 1.5rem; }\n\npre,\nblockquote,\ndl,\nfigure,\ntable,\np,\nul,\nol,\nform {\n  margin-bottom: 2.5rem; }\n\n/* Utilities\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n.u-full-width {\n  width: 100%;\n  box-sizing: border-box; }\n\n.u-max-full-width {\n  max-width: 100%;\n  box-sizing: border-box; }\n\n.u-pull-right {\n  float: right; }\n\n.u-pull-left {\n  float: left; }\n\n/* Misc\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\nhr {\n  margin-top: 3rem;\n  margin-bottom: 3.5rem;\n  border-width: 0;\n  border-top: 1px solid #E1E1E1; }\n\n/* Clearing\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/* Self Clearing Goodness */\n.container:after,\n.row:after,\n.u-cf {\n  content: \"\";\n  display: table;\n  clear: both; }\n\n/* Media Queries\r\n–––––––––––––––––––––––––––––––––––––––––––––––––– */\n/*\r\nNote: The best way to structure the use of media queries is to create the queries\r\nnear the relevant code. For example, if you wanted to change the styles for buttons\r\non small devices, paste the mobile query code up in the buttons section and style it\r\nthere.\r\n*/\n/* Larger than mobile */\n/* Larger than phablet (also point when grid becomes active) */\n/* Larger than tablet */\n/* Larger than desktop */\n/* Larger than Desktop HD */\n.body-blocked {\n  overflow: hidden; }\n\n#content {\n  width: 763px; }\n\n.b-header {\n  margin-top: 50px; }\n\n.b-table {\n  padding-bottom: 40px; }\n  .b-table table {\n    border-spacing: 0;\n    border: 1px solid #e2e2e2;\n    border-collapse: separate;\n    margin: 20px auto 0; }\n  .b-table td {\n    height: 95px;\n    width: 97px;\n    font-size: 12px;\n    vertical-align: top;\n    padding: 0;\n    border: 1px solid #e2e2e2;\n    overflow: hidden;\n    color: #666666;\n    word-break: break-word; }\n    .b-table td > a {\n      display: block;\n      height: 85px;\n      padding: 5px;\n      overflow: hidden; }\n    .b-table td.b-cell:hover {\n      border-color: #8abfe9;\n      cursor: pointer;\n      background: #e5f1f9; }\n    .b-table td.b-cell.b-cell_today {\n      background: #f4f4f4;\n      font-weight: bold; }\n    .b-table td.b-cell.active {\n      background: #e5f1f9;\n      border-color: #8abfe9; }\n    .b-table td.b-cell_full {\n      background: #c2e4fe; }\n    .b-table td .date {\n      color: #999999;\n      font-weight: 300;\n      font-style: italic;\n      font-size: 13px; }\n    .b-table td .title {\n      font-weight: bold; }\n\n.b-popup {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n  overflow: auto;\n  background: rgba(100, 100, 100, 0.75); }\n  .b-popup .b-popup__window {\n    z-index: 2;\n    margin: 50px auto;\n    border-radius: 3px;\n    overflow: hidden;\n    background: #fff;\n    position: relative;\n    width: 250px;\n    height: 350px;\n    padding: 20px; }\n    .b-popup .b-popup__window > div {\n      margin: 10px 0; }\n    .b-popup .b-popup__window .b-popup__close {\n      position: absolute;\n      top: 10px;\n      right: 10px;\n      cursor: pointer;\n      line-height: 12px;\n      font-size: 13px; }\n    .b-popup .b-popup__window .b-popup__date {\n      font-size: 15px;\n      height: 20px;\n      font-weight: 300; }\n    .b-popup .b-popup__window input[type=\"text\"], .b-popup .b-popup__window textarea {\n      display: block;\n      border: 1px solid #d2d2d2;\n      border-radius: 3px;\n      outline: none;\n      line-height: 25px;\n      box-shadow: inset 1px 2px 2px #a5a5a5; }\n    .b-popup .b-popup__window input[type=\"text\"] {\n      height: 25px;\n      width: 246px;\n      padding: 0 0 0 2px; }\n    .b-popup .b-popup__window textarea {\n      height: 200px;\n      resize: none;\n      width: 244px;\n      padding: 2px; }\n    .b-popup .b-popup__window .b-popup__warning-wrapper {\n      height: 25px;\n      margin: 0; }\n    .b-popup .b-popup__window .b-popup__warning {\n      color: red;\n      display: none;\n      font-size: 11px; }\n      .b-popup .b-popup__window .b-popup__warning.visible {\n        display: block; }\n", ""]);
 
 	// exports
 
@@ -34869,6 +34887,12 @@
 
 	var _reactRedux = __webpack_require__(159);
 
+	var _reactBodyClassname = __webpack_require__(274);
+
+	var _reactBodyClassname2 = _interopRequireDefault(_reactBodyClassname);
+
+	var _actions = __webpack_require__(238);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -34887,49 +34911,62 @@
 		}
 
 		_createClass(Modal, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				this.props.dispatch((0, _actions.modalOpened)(this.props.date));
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var date = this.props.date;
 				return _react2.default.createElement(
-					'div',
-					{ className: 'b-popup' },
+					_reactBodyClassname2.default,
+					{ className: 'body-blocked' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'b-popup__window' },
-						_react2.default.createElement(
-							'span',
-							{ className: 'b-popup__close' },
-							'x'
-						),
-						_react2.default.createElement('div', { className: 'b-popup__date' }),
+						{ className: 'b-popup' },
 						_react2.default.createElement(
 							'div',
-							{ className: 'b-popup__title' },
-							_react2.default.createElement('input', { type: 'text', placeholder: 'Заголовок', name: 'title' })
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'b-popup__description' },
-							_react2.default.createElement('textarea', { name: 'description', placeholder: 'Описание' })
-						),
-						_react2.default.createElement(
-							'p',
-							{ className: 'b-popup__warning-wrapper' },
+							{ className: 'b-popup__window' },
 							_react2.default.createElement(
 								'span',
-								{ className: 'b-popup__warning' },
-								'Для сохранения заполните все поля'
+								{ className: 'b-popup__close' },
+								'x'
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'b-popup__date' },
+								date
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'b-popup__title' },
+								_react2.default.createElement('input', { type: 'text', placeholder: 'Заголовок', name: 'title' })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'b-popup__description' },
+								_react2.default.createElement('textarea', { name: 'description', placeholder: 'Описание' })
+							),
+							_react2.default.createElement(
+								'p',
+								{ className: 'b-popup__warning-wrapper' },
+								_react2.default.createElement(
+									'span',
+									{ className: 'b-popup__warning' },
+									'Для сохранения заполните все поля'
+								)
+							),
+							_react2.default.createElement(
+								'span',
+								{ className: 'b-popup__btn b-popup__btn_save' },
+								'Сохранить'
+							),
+							_react2.default.createElement(
+								'span',
+								{ className: 'b-popup__btn b-popup__btn_delete' },
+								'Удалить'
 							)
-						),
-						_react2.default.createElement(
-							'span',
-							{ className: 'b-popup__btn b-popup__btn_save' },
-							'Сохранить'
-						),
-						_react2.default.createElement(
-							'span',
-							{ className: 'b-popup__btn b-popup__btn_delete' },
-							'Удалить'
 						)
 					)
 				);
@@ -34940,12 +34977,3238 @@
 	}(_react.Component);
 
 	function mapStateToProps(state, ownProps) {
+		var events = state.events;
+
 		return {
 			date: ownProps.params.date
 		};
 	}
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Modal);
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(147),
+	  uniq = __webpack_require__(275),
+	  withSideEffect = __webpack_require__(292);
+
+	function reducePropsToState(propsList) {
+	  return uniq(propsList.map(function(props) {
+	    return props.className;
+	  })).join(' ');
+	}
+
+	function handleStateChangeOnClient(stringClassNames) {
+	  document.body.className = stringClassNames || '';
+	}
+
+	var DocumentTitle = React.createClass({
+	  propTypes: {
+	    className: React.PropTypes.string.isRequired
+	  },
+
+	  render: function render() {
+	    if (this.props.children) {
+	      return React.Children.only(this.props.children);
+	    } else {
+	      return null;
+	    }
+	  }
+	});
+
+	module.exports = withSideEffect(
+	  reducePropsToState,
+	  handleStateChangeOnClient
+	)(DocumentTitle);
+
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.2.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseCallback = __webpack_require__(276),
+	    baseUniq = __webpack_require__(287),
+	    isIterateeCall = __webpack_require__(291);
+
+	/**
+	 * An implementation of `_.uniq` optimized for sorted arrays without support
+	 * for callback shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} [iteratee] The function invoked per iteration.
+	 * @returns {Array} Returns the new duplicate-value-free array.
+	 */
+	function sortedUniq(array, iteratee) {
+	  var seen,
+	      index = -1,
+	      length = array.length,
+	      resIndex = -1,
+	      result = [];
+
+	  while (++index < length) {
+	    var value = array[index],
+	        computed = iteratee ? iteratee(value, index, array) : value;
+
+	    if (!index || seen !== computed) {
+	      seen = computed;
+	      result[++resIndex] = value;
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Creates a duplicate-free version of an array, using
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * for equality comparisons, in which only the first occurence of each element
+	 * is kept. Providing `true` for `isSorted` performs a faster search algorithm
+	 * for sorted arrays. If an iteratee function is provided it is invoked for
+	 * each element in the array to generate the criterion by which uniqueness
+	 * is computed. The `iteratee` is bound to `thisArg` and invoked with three
+	 * arguments: (value, index, array).
+	 *
+	 * If a property name is provided for `iteratee` the created `_.property`
+	 * style callback returns the property value of the given element.
+	 *
+	 * If a value is also provided for `thisArg` the created `_.matchesProperty`
+	 * style callback returns `true` for elements that have a matching property
+	 * value, else `false`.
+	 *
+	 * If an object is provided for `iteratee` the created `_.matches` style
+	 * callback returns `true` for elements that have the properties of the given
+	 * object, else `false`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @alias unique
+	 * @category Array
+	 * @param {Array} array The array to inspect.
+	 * @param {boolean} [isSorted] Specify the array is sorted.
+	 * @param {Function|Object|string} [iteratee] The function invoked per iteration.
+	 * @param {*} [thisArg] The `this` binding of `iteratee`.
+	 * @returns {Array} Returns the new duplicate-value-free array.
+	 * @example
+	 *
+	 * _.uniq([2, 1, 2]);
+	 * // => [2, 1]
+	 *
+	 * // using `isSorted`
+	 * _.uniq([1, 1, 2], true);
+	 * // => [1, 2]
+	 *
+	 * // using an iteratee function
+	 * _.uniq([1, 2.5, 1.5, 2], function(n) {
+	 *   return this.floor(n);
+	 * }, Math);
+	 * // => [1, 2.5]
+	 *
+	 * // using the `_.property` callback shorthand
+	 * _.uniq([{ 'x': 1 }, { 'x': 2 }, { 'x': 1 }], 'x');
+	 * // => [{ 'x': 1 }, { 'x': 2 }]
+	 */
+	function uniq(array, isSorted, iteratee, thisArg) {
+	  var length = array ? array.length : 0;
+	  if (!length) {
+	    return [];
+	  }
+	  if (isSorted != null && typeof isSorted != 'boolean') {
+	    thisArg = iteratee;
+	    iteratee = isIterateeCall(array, isSorted, thisArg) ? undefined : isSorted;
+	    isSorted = false;
+	  }
+	  iteratee = iteratee == null ? iteratee : baseCallback(iteratee, thisArg, 3);
+	  return (isSorted)
+	    ? sortedUniq(array, iteratee)
+	    : baseUniq(array, iteratee);
+	}
+
+	module.exports = uniq;
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.3.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseIsEqual = __webpack_require__(277),
+	    bindCallback = __webpack_require__(283),
+	    isArray = __webpack_require__(278),
+	    pairs = __webpack_require__(284);
+
+	/** Used to match property names within property paths. */
+	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
+	    reIsPlainProp = /^\w*$/,
+	    rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\n\\]|\\.)*?)\2)\]/g;
+
+	/** Used to match backslashes in property paths. */
+	var reEscapeChar = /\\(\\)?/g;
+
+	/**
+	 * Converts `value` to a string if it's not one. An empty string is returned
+	 * for `null` or `undefined` values.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+	function baseToString(value) {
+	  return value == null ? '' : (value + '');
+	}
+
+	/**
+	 * The base implementation of `_.callback` which supports specifying the
+	 * number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {*} [func=_.identity] The value to convert to a callback.
+	 * @param {*} [thisArg] The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function baseCallback(func, thisArg, argCount) {
+	  var type = typeof func;
+	  if (type == 'function') {
+	    return thisArg === undefined
+	      ? func
+	      : bindCallback(func, thisArg, argCount);
+	  }
+	  if (func == null) {
+	    return identity;
+	  }
+	  if (type == 'object') {
+	    return baseMatches(func);
+	  }
+	  return thisArg === undefined
+	    ? property(func)
+	    : baseMatchesProperty(func, thisArg);
+	}
+
+	/**
+	 * The base implementation of `get` without support for string paths
+	 * and default values.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array} path The path of the property to get.
+	 * @param {string} [pathKey] The key representation of path.
+	 * @returns {*} Returns the resolved value.
+	 */
+	function baseGet(object, path, pathKey) {
+	  if (object == null) {
+	    return;
+	  }
+	  if (pathKey !== undefined && pathKey in toObject(object)) {
+	    path = [pathKey];
+	  }
+	  var index = 0,
+	      length = path.length;
+
+	  while (object != null && index < length) {
+	    object = object[path[index++]];
+	  }
+	  return (index && index == length) ? object : undefined;
+	}
+
+	/**
+	 * The base implementation of `_.isMatch` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Object} object The object to inspect.
+	 * @param {Array} matchData The propery names, values, and compare flags to match.
+	 * @param {Function} [customizer] The function to customize comparing objects.
+	 * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+	 */
+	function baseIsMatch(object, matchData, customizer) {
+	  var index = matchData.length,
+	      length = index,
+	      noCustomizer = !customizer;
+
+	  if (object == null) {
+	    return !length;
+	  }
+	  object = toObject(object);
+	  while (index--) {
+	    var data = matchData[index];
+	    if ((noCustomizer && data[2])
+	          ? data[1] !== object[data[0]]
+	          : !(data[0] in object)
+	        ) {
+	      return false;
+	    }
+	  }
+	  while (++index < length) {
+	    data = matchData[index];
+	    var key = data[0],
+	        objValue = object[key],
+	        srcValue = data[1];
+
+	    if (noCustomizer && data[2]) {
+	      if (objValue === undefined && !(key in object)) {
+	        return false;
+	      }
+	    } else {
+	      var result = customizer ? customizer(objValue, srcValue, key) : undefined;
+	      if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, true) : result)) {
+	        return false;
+	      }
+	    }
+	  }
+	  return true;
+	}
+
+	/**
+	 * The base implementation of `_.matches` which does not clone `source`.
+	 *
+	 * @private
+	 * @param {Object} source The object of property values to match.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseMatches(source) {
+	  var matchData = getMatchData(source);
+	  if (matchData.length == 1 && matchData[0][2]) {
+	    var key = matchData[0][0],
+	        value = matchData[0][1];
+
+	    return function(object) {
+	      if (object == null) {
+	        return false;
+	      }
+	      return object[key] === value && (value !== undefined || (key in toObject(object)));
+	    };
+	  }
+	  return function(object) {
+	    return baseIsMatch(object, matchData);
+	  };
+	}
+
+	/**
+	 * The base implementation of `_.matchesProperty` which does not clone `srcValue`.
+	 *
+	 * @private
+	 * @param {string} path The path of the property to get.
+	 * @param {*} srcValue The value to compare.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseMatchesProperty(path, srcValue) {
+	  var isArr = isArray(path),
+	      isCommon = isKey(path) && isStrictComparable(srcValue),
+	      pathKey = (path + '');
+
+	  path = toPath(path);
+	  return function(object) {
+	    if (object == null) {
+	      return false;
+	    }
+	    var key = pathKey;
+	    object = toObject(object);
+	    if ((isArr || !isCommon) && !(key in object)) {
+	      object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+	      if (object == null) {
+	        return false;
+	      }
+	      key = last(path);
+	      object = toObject(object);
+	    }
+	    return object[key] === srcValue
+	      ? (srcValue !== undefined || (key in object))
+	      : baseIsEqual(srcValue, object[key], undefined, true);
+	  };
+	}
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * A specialized version of `baseProperty` which supports deep paths.
+	 *
+	 * @private
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function basePropertyDeep(path) {
+	  var pathKey = (path + '');
+	  path = toPath(path);
+	  return function(object) {
+	    return baseGet(object, path, pathKey);
+	  };
+	}
+
+	/**
+	 * The base implementation of `_.slice` without an iteratee call guard.
+	 *
+	 * @private
+	 * @param {Array} array The array to slice.
+	 * @param {number} [start=0] The start position.
+	 * @param {number} [end=array.length] The end position.
+	 * @returns {Array} Returns the slice of `array`.
+	 */
+	function baseSlice(array, start, end) {
+	  var index = -1,
+	      length = array.length;
+
+	  start = start == null ? 0 : (+start || 0);
+	  if (start < 0) {
+	    start = -start > length ? 0 : (length + start);
+	  }
+	  end = (end === undefined || end > length) ? length : (+end || 0);
+	  if (end < 0) {
+	    end += length;
+	  }
+	  length = start > end ? 0 : ((end - start) >>> 0);
+	  start >>>= 0;
+
+	  var result = Array(length);
+	  while (++index < length) {
+	    result[index] = array[index + start];
+	  }
+	  return result;
+	}
+
+	/**
+	 * Gets the propery names, values, and compare flags of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the match data of `object`.
+	 */
+	function getMatchData(object) {
+	  var result = pairs(object),
+	      length = result.length;
+
+	  while (length--) {
+	    result[length][2] = isStrictComparable(result[length][1]);
+	  }
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is a property name and not a property path.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {Object} [object] The object to query keys on.
+	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+	 */
+	function isKey(value, object) {
+	  var type = typeof value;
+	  if ((type == 'string' && reIsPlainProp.test(value)) || type == 'number') {
+	    return true;
+	  }
+	  if (isArray(value)) {
+	    return false;
+	  }
+	  var result = !reIsDeepProp.test(value);
+	  return result || (object != null && value in toObject(object));
+	}
+
+	/**
+	 * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` if suitable for strict
+	 *  equality comparisons, else `false`.
+	 */
+	function isStrictComparable(value) {
+	  return value === value && !isObject(value);
+	}
+
+	/**
+	 * Converts `value` to an object if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {Object} Returns the object.
+	 */
+	function toObject(value) {
+	  return isObject(value) ? value : Object(value);
+	}
+
+	/**
+	 * Converts `value` to property path array if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {Array} Returns the property path array.
+	 */
+	function toPath(value) {
+	  if (isArray(value)) {
+	    return value;
+	  }
+	  var result = [];
+	  baseToString(value).replace(rePropName, function(match, number, quote, string) {
+	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+	  });
+	  return result;
+	}
+
+	/**
+	 * Gets the last element of `array`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Array
+	 * @param {Array} array The array to query.
+	 * @returns {*} Returns the last element of `array`.
+	 * @example
+	 *
+	 * _.last([1, 2, 3]);
+	 * // => 3
+	 */
+	function last(array) {
+	  var length = array ? array.length : 0;
+	  return length ? array[length - 1] : undefined;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * This method returns the first argument provided to it.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 *
+	 * _.identity(object) === object;
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	/**
+	 * Creates a function that returns the property value at `path` on a
+	 * given object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {Function} Returns the new function.
+	 * @example
+	 *
+	 * var objects = [
+	 *   { 'a': { 'b': { 'c': 2 } } },
+	 *   { 'a': { 'b': { 'c': 1 } } }
+	 * ];
+	 *
+	 * _.map(objects, _.property('a.b.c'));
+	 * // => [2, 1]
+	 *
+	 * _.pluck(_.sortBy(objects, _.property(['a', 'b', 'c'])), 'a.b.c');
+	 * // => [1, 2]
+	 */
+	function property(path) {
+	  return isKey(path) ? baseProperty(path) : basePropertyDeep(path);
+	}
+
+	module.exports = baseCallback;
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.0.7 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var isArray = __webpack_require__(278),
+	    isTypedArray = __webpack_require__(279),
+	    keys = __webpack_require__(280);
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    arrayTag = '[object Array]',
+	    boolTag = '[object Boolean]',
+	    dateTag = '[object Date]',
+	    errorTag = '[object Error]',
+	    numberTag = '[object Number]',
+	    objectTag = '[object Object]',
+	    regexpTag = '[object RegExp]',
+	    stringTag = '[object String]';
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/**
+	 * A specialized version of `_.some` for arrays without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	function arraySome(array, predicate) {
+	  var index = -1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    if (predicate(array[index], index, array)) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+
+	/**
+	 * The base implementation of `_.isEqual` without support for `this` binding
+	 * `customizer` functions.
+	 *
+	 * @private
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @param {Function} [customizer] The function to customize comparing values.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA] Tracks traversed `value` objects.
+	 * @param {Array} [stackB] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 */
+	function baseIsEqual(value, other, customizer, isLoose, stackA, stackB) {
+	  if (value === other) {
+	    return true;
+	  }
+	  if (value == null || other == null || (!isObject(value) && !isObjectLike(other))) {
+	    return value !== value && other !== other;
+	  }
+	  return baseIsEqualDeep(value, other, baseIsEqual, customizer, isLoose, stackA, stackB);
+	}
+
+	/**
+	 * A specialized version of `baseIsEqual` for arrays and objects which performs
+	 * deep comparisons and tracks traversed objects enabling objects with circular
+	 * references to be compared.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} [customizer] The function to customize comparing objects.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA=[]] Tracks traversed `value` objects.
+	 * @param {Array} [stackB=[]] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function baseIsEqualDeep(object, other, equalFunc, customizer, isLoose, stackA, stackB) {
+	  var objIsArr = isArray(object),
+	      othIsArr = isArray(other),
+	      objTag = arrayTag,
+	      othTag = arrayTag;
+
+	  if (!objIsArr) {
+	    objTag = objToString.call(object);
+	    if (objTag == argsTag) {
+	      objTag = objectTag;
+	    } else if (objTag != objectTag) {
+	      objIsArr = isTypedArray(object);
+	    }
+	  }
+	  if (!othIsArr) {
+	    othTag = objToString.call(other);
+	    if (othTag == argsTag) {
+	      othTag = objectTag;
+	    } else if (othTag != objectTag) {
+	      othIsArr = isTypedArray(other);
+	    }
+	  }
+	  var objIsObj = objTag == objectTag,
+	      othIsObj = othTag == objectTag,
+	      isSameTag = objTag == othTag;
+
+	  if (isSameTag && !(objIsArr || objIsObj)) {
+	    return equalByTag(object, other, objTag);
+	  }
+	  if (!isLoose) {
+	    var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+	        othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+
+	    if (objIsWrapped || othIsWrapped) {
+	      return equalFunc(objIsWrapped ? object.value() : object, othIsWrapped ? other.value() : other, customizer, isLoose, stackA, stackB);
+	    }
+	  }
+	  if (!isSameTag) {
+	    return false;
+	  }
+	  // Assume cyclic values are equal.
+	  // For more information on detecting circular references see https://es5.github.io/#JO.
+	  stackA || (stackA = []);
+	  stackB || (stackB = []);
+
+	  var length = stackA.length;
+	  while (length--) {
+	    if (stackA[length] == object) {
+	      return stackB[length] == other;
+	    }
+	  }
+	  // Add `object` and `other` to the stack of traversed objects.
+	  stackA.push(object);
+	  stackB.push(other);
+
+	  var result = (objIsArr ? equalArrays : equalObjects)(object, other, equalFunc, customizer, isLoose, stackA, stackB);
+
+	  stackA.pop();
+	  stackB.pop();
+
+	  return result;
+	}
+
+	/**
+	 * A specialized version of `baseIsEqualDeep` for arrays with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Array} array The array to compare.
+	 * @param {Array} other The other array to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} [customizer] The function to customize comparing arrays.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA] Tracks traversed `value` objects.
+	 * @param {Array} [stackB] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+	 */
+	function equalArrays(array, other, equalFunc, customizer, isLoose, stackA, stackB) {
+	  var index = -1,
+	      arrLength = array.length,
+	      othLength = other.length;
+
+	  if (arrLength != othLength && !(isLoose && othLength > arrLength)) {
+	    return false;
+	  }
+	  // Ignore non-index properties.
+	  while (++index < arrLength) {
+	    var arrValue = array[index],
+	        othValue = other[index],
+	        result = customizer ? customizer(isLoose ? othValue : arrValue, isLoose ? arrValue : othValue, index) : undefined;
+
+	    if (result !== undefined) {
+	      if (result) {
+	        continue;
+	      }
+	      return false;
+	    }
+	    // Recursively compare arrays (susceptible to call stack limits).
+	    if (isLoose) {
+	      if (!arraySome(other, function(othValue) {
+	            return arrValue === othValue || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB);
+	          })) {
+	        return false;
+	      }
+	    } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, customizer, isLoose, stackA, stackB))) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+
+	/**
+	 * A specialized version of `baseIsEqualDeep` for comparing objects of
+	 * the same `toStringTag`.
+	 *
+	 * **Note:** This function only supports comparing values with tags of
+	 * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+	 *
+	 * @private
+	 * @param {Object} value The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {string} tag The `toStringTag` of the objects to compare.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function equalByTag(object, other, tag) {
+	  switch (tag) {
+	    case boolTag:
+	    case dateTag:
+	      // Coerce dates and booleans to numbers, dates to milliseconds and booleans
+	      // to `1` or `0` treating invalid dates coerced to `NaN` as not equal.
+	      return +object == +other;
+
+	    case errorTag:
+	      return object.name == other.name && object.message == other.message;
+
+	    case numberTag:
+	      // Treat `NaN` vs. `NaN` as equal.
+	      return (object != +object)
+	        ? other != +other
+	        : object == +other;
+
+	    case regexpTag:
+	    case stringTag:
+	      // Coerce regexes to strings and treat strings primitives and string
+	      // objects as equal. See https://es5.github.io/#x15.10.6.4 for more details.
+	      return object == (other + '');
+	  }
+	  return false;
+	}
+
+	/**
+	 * A specialized version of `baseIsEqualDeep` for objects with support for
+	 * partial deep comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to compare.
+	 * @param {Object} other The other object to compare.
+	 * @param {Function} equalFunc The function to determine equivalents of values.
+	 * @param {Function} [customizer] The function to customize comparing values.
+	 * @param {boolean} [isLoose] Specify performing partial comparisons.
+	 * @param {Array} [stackA] Tracks traversed `value` objects.
+	 * @param {Array} [stackB] Tracks traversed `other` objects.
+	 * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+	 */
+	function equalObjects(object, other, equalFunc, customizer, isLoose, stackA, stackB) {
+	  var objProps = keys(object),
+	      objLength = objProps.length,
+	      othProps = keys(other),
+	      othLength = othProps.length;
+
+	  if (objLength != othLength && !isLoose) {
+	    return false;
+	  }
+	  var index = objLength;
+	  while (index--) {
+	    var key = objProps[index];
+	    if (!(isLoose ? key in other : hasOwnProperty.call(other, key))) {
+	      return false;
+	    }
+	  }
+	  var skipCtor = isLoose;
+	  while (++index < objLength) {
+	    key = objProps[index];
+	    var objValue = object[key],
+	        othValue = other[key],
+	        result = customizer ? customizer(isLoose ? othValue : objValue, isLoose? objValue : othValue, key) : undefined;
+
+	    // Recursively compare objects (susceptible to call stack limits).
+	    if (!(result === undefined ? equalFunc(objValue, othValue, customizer, isLoose, stackA, stackB) : result)) {
+	      return false;
+	    }
+	    skipCtor || (skipCtor = key == 'constructor');
+	  }
+	  if (!skipCtor) {
+	    var objCtor = object.constructor,
+	        othCtor = other.constructor;
+
+	    // Non `Object` object instances with different constructors are not equal.
+	    if (objCtor != othCtor &&
+	        ('constructor' in object && 'constructor' in other) &&
+	        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+	          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+	      return false;
+	    }
+	  }
+	  return true;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = baseIsEqual;
+
+
+/***/ },
+/* 278 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]',
+	    funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+	};
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 279 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    arrayTag = '[object Array]',
+	    boolTag = '[object Boolean]',
+	    dateTag = '[object Date]',
+	    errorTag = '[object Error]',
+	    funcTag = '[object Function]',
+	    mapTag = '[object Map]',
+	    numberTag = '[object Number]',
+	    objectTag = '[object Object]',
+	    regexpTag = '[object RegExp]',
+	    setTag = '[object Set]',
+	    stringTag = '[object String]',
+	    weakMapTag = '[object WeakMap]';
+
+	var arrayBufferTag = '[object ArrayBuffer]',
+	    float32Tag = '[object Float32Array]',
+	    float64Tag = '[object Float64Array]',
+	    int8Tag = '[object Int8Array]',
+	    int16Tag = '[object Int16Array]',
+	    int32Tag = '[object Int32Array]',
+	    uint8Tag = '[object Uint8Array]',
+	    uint8ClampedTag = '[object Uint8ClampedArray]',
+	    uint16Tag = '[object Uint16Array]',
+	    uint32Tag = '[object Uint32Array]';
+
+	/** Used to identify `toStringTag` values of typed arrays. */
+	var typedArrayTags = {};
+	typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+	typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+	typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+	typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+	typedArrayTags[uint32Tag] = true;
+	typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
+	typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+	typedArrayTags[dateTag] = typedArrayTags[errorTag] =
+	typedArrayTags[funcTag] = typedArrayTags[mapTag] =
+	typedArrayTags[numberTag] = typedArrayTags[objectTag] =
+	typedArrayTags[regexpTag] = typedArrayTags[setTag] =
+	typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+
+	/** Used for built-in method references. */
+	var objectProto = global.Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/**
+	 * Checks if `value` is classified as a typed array.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isTypedArray(new Uint8Array);
+	 * // => true
+	 *
+	 * _.isTypedArray([]);
+	 * // => false
+	 */
+	function isTypedArray(value) {
+	  return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+	}
+
+	module.exports = isTypedArray;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var getNative = __webpack_require__(281),
+	    isArguments = __webpack_require__(282),
+	    isArray = __webpack_require__(278);
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = getNative(Object, 'keys');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * A fallback implementation of `Object.keys` which creates an array of the
+	 * own enumerable property names of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function shimKeys(object) {
+	  var props = keysIn(object),
+	      propsLength = props.length,
+	      length = propsLength && object.length;
+
+	  var allowIndexes = !!length && isLength(length) &&
+	    (isArray(object) || isArguments(object));
+
+	  var index = -1,
+	      result = [];
+
+	  while (++index < propsLength) {
+	    var key = props[index];
+	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	var keys = !nativeKeys ? shimKeys : function(object) {
+	  var Ctor = object == null ? undefined : object.constructor;
+	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+	      (typeof object != 'function' && isArrayLike(object))) {
+	    return shimKeys(object);
+	  }
+	  return isObject(object) ? nativeKeys(object) : [];
+	};
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keys;
+
+
+/***/ },
+/* 281 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.9.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = getNative;
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * lodash 3.0.5 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+
+	/** Used for built-in method references. */
+	var objectProto = global.Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null &&
+	    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+	}
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array constructors, and
+	  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isArguments;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 283 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * A specialized version of `baseCallback` which only supports `this` binding
+	 * and specifying the number of arguments to provide to `func`.
+	 *
+	 * @private
+	 * @param {Function} func The function to bind.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {number} [argCount] The number of arguments to provide to `func`.
+	 * @returns {Function} Returns the callback.
+	 */
+	function bindCallback(func, thisArg, argCount) {
+	  if (typeof func != 'function') {
+	    return identity;
+	  }
+	  if (thisArg === undefined) {
+	    return func;
+	  }
+	  switch (argCount) {
+	    case 1: return function(value) {
+	      return func.call(thisArg, value);
+	    };
+	    case 3: return function(value, index, collection) {
+	      return func.call(thisArg, value, index, collection);
+	    };
+	    case 4: return function(accumulator, value, index, collection) {
+	      return func.call(thisArg, accumulator, value, index, collection);
+	    };
+	    case 5: return function(value, other, key, object, source) {
+	      return func.call(thisArg, value, other, key, object, source);
+	    };
+	  }
+	  return function() {
+	    return func.apply(thisArg, arguments);
+	  };
+	}
+
+	/**
+	 * This method returns the first argument provided to it.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Utility
+	 * @param {*} value Any value.
+	 * @returns {*} Returns `value`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 *
+	 * _.identity(object) === object;
+	 * // => true
+	 */
+	function identity(value) {
+	  return value;
+	}
+
+	module.exports = bindCallback;
+
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.0.1 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var keys = __webpack_require__(285);
+
+	/**
+	 * Converts `value` to an object if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {Object} Returns the object.
+	 */
+	function toObject(value) {
+	  return isObject(value) ? value : Object(value);
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Creates a two dimensional array of the key-value pairs for `object`,
+	 * e.g. `[[key1, value1], [key2, value2]]`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the new array of key-value pairs.
+	 * @example
+	 *
+	 * _.pairs({ 'barney': 36, 'fred': 40 });
+	 * // => [['barney', 36], ['fred', 40]] (iteration order is not guaranteed)
+	 */
+	function pairs(object) {
+	  object = toObject(object);
+
+	  var index = -1,
+	      props = keys(object),
+	      length = props.length,
+	      result = Array(length);
+
+	  while (++index < length) {
+	    var key = props[index];
+	    result[index] = [key, object[key]];
+	  }
+	  return result;
+	}
+
+	module.exports = pairs;
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var getNative = __webpack_require__(281),
+	    isArguments = __webpack_require__(286),
+	    isArray = __webpack_require__(278);
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = getNative(Object, 'keys');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * A fallback implementation of `Object.keys` which creates an array of the
+	 * own enumerable property names of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function shimKeys(object) {
+	  var props = keysIn(object),
+	      propsLength = props.length,
+	      length = propsLength && object.length;
+
+	  var allowIndexes = !!length && isLength(length) &&
+	    (isArray(object) || isArguments(object));
+
+	  var index = -1,
+	      result = [];
+
+	  while (++index < propsLength) {
+	    var key = props[index];
+	    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	var keys = !nativeKeys ? shimKeys : function(object) {
+	  var Ctor = object == null ? undefined : object.constructor;
+	  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
+	      (typeof object != 'function' && isArrayLike(object))) {
+	    return shimKeys(object);
+	  }
+	  return isObject(object) ? nativeKeys(object) : [];
+	};
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keys;
+
+
+/***/ },
+/* 286 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * lodash 3.0.5 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+
+	/** Used for built-in method references. */
+	var objectProto = global.Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null &&
+	    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+	}
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array constructors, and
+	  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isArguments;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseIndexOf = __webpack_require__(288),
+	    cacheIndexOf = __webpack_require__(289),
+	    createCache = __webpack_require__(290);
+
+	/** Used as the size to enable large array optimizations. */
+	var LARGE_ARRAY_SIZE = 200;
+
+	/**
+	 * The base implementation of `_.uniq` without support for callback shorthands
+	 * and `this` binding.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} [iteratee] The function invoked per iteration.
+	 * @returns {Array} Returns the new duplicate-value-free array.
+	 */
+	function baseUniq(array, iteratee) {
+	  var index = -1,
+	      indexOf = baseIndexOf,
+	      length = array.length,
+	      isCommon = true,
+	      isLarge = isCommon && length >= LARGE_ARRAY_SIZE,
+	      seen = isLarge ? createCache() : null,
+	      result = [];
+
+	  if (seen) {
+	    indexOf = cacheIndexOf;
+	    isCommon = false;
+	  } else {
+	    isLarge = false;
+	    seen = iteratee ? [] : result;
+	  }
+	  outer:
+	  while (++index < length) {
+	    var value = array[index],
+	        computed = iteratee ? iteratee(value, index, array) : value;
+
+	    if (isCommon && value === value) {
+	      var seenIndex = seen.length;
+	      while (seenIndex--) {
+	        if (seen[seenIndex] === computed) {
+	          continue outer;
+	        }
+	      }
+	      if (iteratee) {
+	        seen.push(computed);
+	      }
+	      result.push(value);
+	    }
+	    else if (indexOf(seen, computed, 0) < 0) {
+	      if (iteratee || isLarge) {
+	        seen.push(computed);
+	      }
+	      result.push(value);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = baseUniq;
+
+
+/***/ },
+/* 288 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.1.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.2 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * The base implementation of `_.indexOf` without support for binary searches.
+	 *
+	 * @private
+	 * @param {Array} array The array to search.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function baseIndexOf(array, value, fromIndex) {
+	  if (value !== value) {
+	    return indexOfNaN(array, fromIndex);
+	  }
+	  var index = fromIndex - 1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    if (array[index] === value) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+
+	/**
+	 * Gets the index at which the first occurrence of `NaN` is found in `array`.
+	 * If `fromRight` is provided elements of `array` are iterated from right to left.
+	 *
+	 * @private
+	 * @param {Array} array The array to search.
+	 * @param {number} fromIndex The index to search from.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {number} Returns the index of the matched `NaN`, else `-1`.
+	 */
+	function indexOfNaN(array, fromIndex, fromRight) {
+	  var length = array.length,
+	      index = fromIndex + (fromRight ? 0 : -1);
+
+	  while ((fromRight ? index-- : ++index < length)) {
+	    var other = array[index];
+	    if (other !== other) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+
+	module.exports = baseIndexOf;
+
+
+/***/ },
+/* 289 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * Checks if `value` is in `cache` mimicking the return signature of
+	 * `_.indexOf` by returning `0` if the value is found, else `-1`.
+	 *
+	 * @private
+	 * @param {Object} cache The cache to search.
+	 * @param {*} value The value to search for.
+	 * @returns {number} Returns `0` if `value` is found, else `-1`.
+	 */
+	function cacheIndexOf(cache, value) {
+	  var data = cache.data,
+	      result = (typeof value == 'string' || isObject(value)) ? data.set.has(value) : data.hash[value];
+
+	  return result ? 0 : -1;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = cacheIndexOf;
+
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * lodash 3.1.2 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var getNative = __webpack_require__(281);
+
+	/** Native method references. */
+	var Set = getNative(global, 'Set');
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeCreate = getNative(Object, 'create');
+
+	/**
+	 *
+	 * Creates a cache object to store unique values.
+	 *
+	 * @private
+	 * @param {Array} [values] The values to cache.
+	 */
+	function SetCache(values) {
+	  var length = values ? values.length : 0;
+
+	  this.data = { 'hash': nativeCreate(null), 'set': new Set };
+	  while (length--) {
+	    this.push(values[length]);
+	  }
+	}
+
+	/**
+	 * Adds `value` to the cache.
+	 *
+	 * @private
+	 * @name push
+	 * @memberOf SetCache
+	 * @param {*} value The value to cache.
+	 */
+	function cachePush(value) {
+	  var data = this.data;
+	  if (typeof value == 'string' || isObject(value)) {
+	    data.set.add(value);
+	  } else {
+	    data.hash[value] = true;
+	  }
+	}
+
+	/**
+	 * Creates a `Set` cache object to optimize linear searches of large arrays.
+	 *
+	 * @private
+	 * @param {Array} [values] The values to cache.
+	 * @returns {null|Object} Returns the new cache object if `Set` is supported, else `null`.
+	 */
+	function createCache(values) {
+	  return (nativeCreate && Set) ? new SetCache(values) : null;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	// Add functions to the `Set` cache.
+	SetCache.prototype.push = cachePush;
+
+	module.exports = createCache;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 291 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.9 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/**
+	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is array-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(getLength(value));
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if the provided arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call, else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	      ? (isArrayLike(object) && isIndex(index, object.length))
+	      : (type == 'string' && index in object)) {
+	    var other = object[index];
+	    return value === value ? (value === other) : (other !== other);
+	  }
+	  return false;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	module.exports = isIterateeCall;
+
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(147);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _fbjsLibExecutionEnvironment = __webpack_require__(293);
+
+	var _fbjsLibExecutionEnvironment2 = _interopRequireDefault(_fbjsLibExecutionEnvironment);
+
+	var _fbjsLibShallowEqual = __webpack_require__(294);
+
+	var _fbjsLibShallowEqual2 = _interopRequireDefault(_fbjsLibShallowEqual);
+
+	module.exports = function withSideEffect(reducePropsToState, handleStateChangeOnClient, mapStateOnServer) {
+	  if (typeof reducePropsToState !== 'function') {
+	    throw new Error('Expected reducePropsToState to be a function.');
+	  }
+	  if (typeof handleStateChangeOnClient !== 'function') {
+	    throw new Error('Expected handleStateChangeOnClient to be a function.');
+	  }
+	  if (typeof mapStateOnServer !== 'undefined' && typeof mapStateOnServer !== 'function') {
+	    throw new Error('Expected mapStateOnServer to either be undefined or a function.');
+	  }
+
+	  function getDisplayName(WrappedComponent) {
+	    return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+	  }
+
+	  return function wrap(WrappedComponent) {
+	    if (typeof WrappedComponent !== 'function') {
+	      throw new Error('Expected WrappedComponent to be a React component.');
+	    }
+
+	    var mountedInstances = [];
+	    var state = undefined;
+
+	    function emitChange() {
+	      state = reducePropsToState(mountedInstances.map(function (instance) {
+	        return instance.props;
+	      }));
+
+	      if (SideEffect.canUseDOM) {
+	        handleStateChangeOnClient(state);
+	      } else if (mapStateOnServer) {
+	        state = mapStateOnServer(state);
+	      }
+	    }
+
+	    var SideEffect = (function (_Component) {
+	      _inherits(SideEffect, _Component);
+
+	      function SideEffect() {
+	        _classCallCheck(this, SideEffect);
+
+	        _Component.apply(this, arguments);
+	      }
+
+	      SideEffect.peek = function peek() {
+	        return state;
+	      };
+
+	      SideEffect.rewind = function rewind() {
+	        if (SideEffect.canUseDOM) {
+	          throw new Error('You may ony call rewind() on the server. Call peek() to read the current state.');
+	        }
+
+	        var recordedState = state;
+	        state = undefined;
+	        mountedInstances = [];
+	        return recordedState;
+	      };
+
+	      SideEffect.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+	        return !_fbjsLibShallowEqual2['default'](nextProps, this.props);
+	      };
+
+	      SideEffect.prototype.componentWillMount = function componentWillMount() {
+	        mountedInstances.push(this);
+	        emitChange();
+	      };
+
+	      SideEffect.prototype.componentDidUpdate = function componentDidUpdate() {
+	        emitChange();
+	      };
+
+	      SideEffect.prototype.componentWillUnmount = function componentWillUnmount() {
+	        var index = mountedInstances.indexOf(this);
+	        mountedInstances.splice(index, 1);
+	        emitChange();
+	      };
+
+	      SideEffect.prototype.render = function render() {
+	        return _react2['default'].createElement(WrappedComponent, this.props);
+	      };
+
+	      _createClass(SideEffect, null, [{
+	        key: 'displayName',
+
+	        // Try to use displayName of wrapped component
+	        value: 'SideEffect(' + getDisplayName(WrappedComponent) + ')',
+
+	        // Expose canUseDOM so tests can monkeypatch it
+	        enumerable: true
+	      }, {
+	        key: 'canUseDOM',
+	        value: _fbjsLibExecutionEnvironment2['default'].canUseDOM,
+	        enumerable: true
+	      }]);
+
+	      return SideEffect;
+	    })(_react.Component);
+
+	    return SideEffect;
+	  };
+	};
+
+/***/ },
+/* 293 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ExecutionEnvironment
+	 */
+
+	'use strict';
+
+	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+	/**
+	 * Simple, lightweight module assisting with the detection and context of
+	 * Worker. Helps avoid circular dependencies and allows code to reason about
+	 * whether or not they are in a Worker, even if they never include the main
+	 * `ReactWorker` dependency.
+	 */
+	var ExecutionEnvironment = {
+
+	  canUseDOM: canUseDOM,
+
+	  canUseWorkers: typeof Worker !== 'undefined',
+
+	  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+	  canUseViewport: canUseDOM && !!window.screen,
+
+	  isInWorker: !canUseDOM // For now, this is true - might change in the future.
+
+	};
+
+	module.exports = ExecutionEnvironment;
+
+/***/ },
+/* 294 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule shallowEqual
+	 * @typechecks
+	 * 
+	 */
+
+	'use strict';
+
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	/**
+	 * Performs equality by iterating through keys on an object and returning false
+	 * when any key has values which are not strictly equal between the arguments.
+	 * Returns true when the values of all keys are strictly equal.
+	 */
+	function shallowEqual(objA, objB) {
+	  if (objA === objB) {
+	    return true;
+	  }
+
+	  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+	    return false;
+	  }
+
+	  var keysA = Object.keys(objA);
+	  var keysB = Object.keys(objB);
+
+	  if (keysA.length !== keysB.length) {
+	    return false;
+	  }
+
+	  // Test for A's keys different from B.
+	  var bHasOwnProperty = hasOwnProperty.bind(objB);
+	  for (var i = 0; i < keysA.length; i++) {
+	    if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+	      return false;
+	    }
+	  }
+
+	  return true;
+	}
+
+	module.exports = shallowEqual;
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createBrowserHistory = __webpack_require__(235);
+
+	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = (0, _createBrowserHistory2.default)();
 
 /***/ }
 /******/ ]);

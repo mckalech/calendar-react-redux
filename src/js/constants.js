@@ -6,4 +6,6 @@ export default {
 	FETCH_EVENTS_SUCCESS: 'FETCH_EVENTS_SUCCESS',
 
 	GO_TO_DATE: 'GO_TO_DATE'
+
+
 };

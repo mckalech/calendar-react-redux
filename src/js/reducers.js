@@ -6,7 +6,8 @@ const initialState = {
 	isFetching: false,
 	events: [],
 	currentUser: window.USER,
-	currentDate: moment()
+	currentDate: moment(),
+	modalIsOpened: false
 };
 
 

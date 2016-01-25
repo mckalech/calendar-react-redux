@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import constants from './constants';
 import API from './api';
 import moment from 'moment';
+import history from './history'
 
 
 function postEventRequest(){
@@ -44,7 +45,7 @@ export function goToNextMonth(){
 	return function (dispatch, getState) {
         let mom = moment(getState().currentDate);
 		mom = mom.add(1, 'months');
-		return dispatch(goToDate(mom));
+		dispatch(goToDate(mom));
     };
 }
 
@@ -52,10 +53,24 @@ export function goToPrevMonth(){
 	return function (dispatch, getState) {
         let mom = moment(getState().currentDate);
 		mom = mom.add(-1, 'months');
-		return dispatch(goToDate(mom));
+		dispatch(goToDate(mom));
     };
 }
 
 export function goToDate(date){
 	return { type: constants.GO_TO_DATE, date}
+}
+
+
+
+export function modalOpened(date){
+	return function (dispatch) {
+		let mom = moment(date, 'D-M-YYYY');
+		if(mom.isValid()){
+			dispatch(goToDate(mom));
+		}else{
+			history.replace('/');
+		}
+
+    };
 }

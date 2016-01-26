@@ -18,6 +18,11 @@ function events(state = initialState.events, action={}) {
 		case constants.POST_EVENT_SUCCESS:
 	        action.events.forEach((e) => e.date = moment(e.date));
 			return action.events;
+		case constants.DELETE_EVENT_SUCCESS:
+			const events = state.filter(function(e) {
+			    return e.cid !== action.cid;
+			});
+			return events;
 		default:
 			return state;
 	}

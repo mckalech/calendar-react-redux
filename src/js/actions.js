@@ -5,6 +5,23 @@ import moment from 'moment';
 import history from './history'
 
 
+function fetchEventsRequest(){
+	return { type: constants.FETCH_EVENTS_REQUEST};
+}
+function fetchEventsSuccess(events){
+	return { type: constants.FETCH_EVENTS_SUCCESS, events}
+}
+export function fetchEvents() {
+	return function (dispatch) {
+        dispatch(fetchEventsRequest());
+        return API.get('/api/events')
+        .then(json =>
+		        dispatch(fetchEventsSuccess(json))
+        );
+    };
+}
+
+
 function postEventRequest(){
 	return { type: constants.POST_EVENT_REQUEST};
 }
@@ -25,21 +42,26 @@ export function postEvent(event) {
   };
 }
 
-function fetchEventsRequest(){
-	return { type: constants.FETCH_EVENTS_REQUEST};
+function deleteEventRequest(){
+	return { type: constants.DELETE_EVENT_REQUEST};
 }
-function fetchEventsSuccess(events){
-	return { type: constants.FETCH_EVENTS_SUCCESS, events}
+function deleteEventSuccess(cid){
+	return { type: constants.DELETE_EVENT_SUCCESS, cid}
 }
-export function fetchEvents() {
+export function deleteEvent(cid) {
 	return function (dispatch) {
-        dispatch(fetchEventsRequest());
-        return API.get('/api/events')
-        .then(json =>
-		        dispatch(fetchEventsSuccess(json))
-        );
+        dispatch(deleteEventRequest());
+        return API.remove('/api/events', {cid})
+        .then(function() {
+			dispatch(closeModal());
+		    return dispatch(deleteEventSuccess(cid))
+	    });
     };
 }
+
+
+
+
 
 
 export function goToNextMonth(){

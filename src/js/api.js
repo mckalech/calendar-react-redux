@@ -19,5 +19,19 @@ export default {
 		}).then(function (res) {
 			return res.json();
 		});
+	},
+	remove: function(url, body) {
+		return fetch(url, {
+			method: 'DELETE',
+			credentials: 'include',
+			body: JSON.stringify(body || {}),
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			}
+
+		}).then(function (res) {
+			return res.json();
+		});
 	}
 }

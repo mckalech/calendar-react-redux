@@ -21092,6 +21092,11 @@
 					return e.date = (0, _moment2.default)(e.date);
 				});
 				return action.events;
+			case _constants2.default.DELETE_EVENT_SUCCESS:
+				var events = state.filter(function (e) {
+					return e.cid !== action.cid;
+				});
+				return events;
 			default:
 				return state;
 		}
@@ -21158,6 +21163,9 @@
 
 		FETCH_EVENTS_REQUEST: 'FETCH_EVENTS_REQUEST',
 		FETCH_EVENTS_SUCCESS: 'FETCH_EVENTS_SUCCESS',
+
+		DELETE_EVENT_REQUEST: 'DELETE_EVENT_REQUEST',
+		DELETE_EVENT_SUCCESS: 'DELETE_EVENT_SUCCESS',
 
 		GO_TO_DATE: 'GO_TO_DATE'
 
@@ -29672,8 +29680,9 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.postEvent = postEvent;
 	exports.fetchEvents = fetchEvents;
+	exports.postEvent = postEvent;
+	exports.deleteEvent = deleteEvent;
 	exports.goToNextMonth = goToNextMonth;
 	exports.goToPrevMonth = goToPrevMonth;
 	exports.goToDate = goToDate;
@@ -29702,6 +29711,21 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function fetchEventsRequest() {
+		return { type: _constants2.default.FETCH_EVENTS_REQUEST };
+	}
+	function fetchEventsSuccess(events) {
+		return { type: _constants2.default.FETCH_EVENTS_SUCCESS, events: events };
+	}
+	function fetchEvents() {
+		return function (dispatch) {
+			dispatch(fetchEventsRequest());
+			return _api2.default.get('/api/events').then(function (json) {
+				return dispatch(fetchEventsSuccess(json));
+			});
+		};
+	}
+
 	function postEventRequest() {
 		return { type: _constants2.default.POST_EVENT_REQUEST };
 	}
@@ -29723,17 +29747,18 @@
 		};
 	}
 
-	function fetchEventsRequest() {
-		return { type: _constants2.default.FETCH_EVENTS_REQUEST };
+	function deleteEventRequest() {
+		return { type: _constants2.default.DELETE_EVENT_REQUEST };
 	}
-	function fetchEventsSuccess(events) {
-		return { type: _constants2.default.FETCH_EVENTS_SUCCESS, events: events };
+	function deleteEventSuccess(cid) {
+		return { type: _constants2.default.DELETE_EVENT_SUCCESS, cid: cid };
 	}
-	function fetchEvents() {
+	function deleteEvent(cid) {
 		return function (dispatch) {
-			dispatch(fetchEventsRequest());
-			return _api2.default.get('/api/events').then(function (json) {
-				return dispatch(fetchEventsSuccess(json));
+			dispatch(deleteEventRequest());
+			return _api2.default.remove('/api/events', { cid: cid }).then(function () {
+				dispatch(closeModal());
+				return dispatch(deleteEventSuccess(cid));
 			});
 		};
 	}
@@ -30201,6 +30226,20 @@
 		post: function post(url, body) {
 			return fetch(url, {
 				method: 'POST',
+				credentials: 'include',
+				body: JSON.stringify(body || {}),
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				}
+
+			}).then(function (res) {
+				return res.json();
+			});
+		},
+		remove: function remove(url, body) {
+			return fetch(url, {
+				method: 'DELETE',
 				credentials: 'include',
 				body: JSON.stringify(body || {}),
 				headers: {
@@ -35030,7 +35069,9 @@
 							),
 							_react2.default.createElement(
 								'span',
-								{ style: { float: "right" }, className: 'button' },
+								{ style: { float: "right" }, className: 'button', onClick: function onClick() {
+										return _this2.onDelete();
+									} },
 								'Удалить'
 							)
 						)
@@ -35080,6 +35121,15 @@
 					date: date.toDate()
 				};
 				this.props.dispatch((0, _actions.postEvent)(event));
+			}
+		}, {
+			key: 'onDelete',
+			value: function onDelete() {
+				if (this.props.event.cid !== undefined) {
+					this.props.dispatch((0, _actions.deleteEvent)(this.props.event.cid));
+				} else {
+					this.close();
+				}
 			}
 		}]);
 

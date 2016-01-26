@@ -17,11 +17,10 @@ router.route('/api/events')
         var event = req.body,
 	        id;
         event.userId = req.user.cid;
-		if(!event.cid){
-			id = events.insert(event);
+		if(event.cid === undefined){
+			events.insert(event);
 		}else{
 			events.update(event.cid, event);
-			id = event.cid;
 		}
 
 		var e = events.toArray();
@@ -29,4 +28,12 @@ router.route('/api/events')
 			return evnt.userId === req.user.cid;
 		});
         res.json(e);
+    })
+	.delete(function (req, res) {
+        var cid = req.body.cid,
+        userId = req.user.cid;
+		if(events.get(cid) && events.get(cid).userId === userId){
+			events.remove(cid);
+		}
+        res.json({});
     });

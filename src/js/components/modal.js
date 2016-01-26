@@ -76,10 +76,13 @@ class Modal extends Component {
 		})
 	}
 	onSave(){
+		const { cid, date} = this.props.event;
+		const {title, text} = this.state;
 		const event ={
-			title:this.state.title,
-			text:this.state.text,
-			date:this.props.event.date.toDate()
+			title,
+			text,
+			cid,
+			date: date.toDate()
 		};
 		this.props.dispatch(postEvent(event))
 	}

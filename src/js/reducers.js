@@ -15,11 +15,9 @@ const initialState = {
 function events(state = initialState.events, action={}) {
 	switch (action.type) {
         case constants.FETCH_EVENTS_SUCCESS:
+		case constants.POST_EVENT_SUCCESS:
 	        action.events.forEach((e) => e.date = moment(e.date));
 			return action.events;
-		case constants.POST_EVENT_SUCCESS:
-			action.event.date = moment(action.event.date);
-			return [...state, action.event];
 		default:
 			return state;
 	}

@@ -14,8 +14,19 @@ router.route('/api/events')
         res.json(e);
     })
     .post(function (req, res) {
-        var event = req.body;
+        var event = req.body,
+	        id;
         event.userId = req.user.cid;
-        var id = events.insert(event);
-        res.json(events.get(id));
+		if(!event.cid){
+			id = events.insert(event);
+		}else{
+			events.update(event.cid, event);
+			id = event.cid;
+		}
+
+		var e = events.toArray();
+		e = e.filter(function(evnt){
+			return evnt.userId === req.user.cid;
+		});
+        res.json(e);
     });

@@ -8,8 +8,8 @@ import history from './history'
 function postEventRequest(){
 	return { type: constants.POST_EVENT_REQUEST};
 }
-function postEventSuccess(event){
-	return { type: constants.POST_EVENT_SUCCESS, event};
+function postEventSuccess(events){
+	return { type: constants.POST_EVENT_SUCCESS, events};
 }
 export function postEvent(event) {
 	return function (dispatch) {

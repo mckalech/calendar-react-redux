@@ -34976,6 +34976,7 @@
 
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Modal).call(this, props));
 
+			_this.esc = _this.handleEscKey.bind(_this);
 			_this.state = {
 				title: props.event.title,
 				text: props.event.text
@@ -34991,6 +34992,12 @@
 				var event = _props.event;
 
 				dispatch((0, _actions.modalOpened)(event.date));
+				window.addEventListener("keydown", this.esc, false);
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				window.removeEventListener("keydown", this.esc, false);
 			}
 		}, {
 			key: 'componentWillReceiveProps',
@@ -35103,6 +35110,13 @@
 				this.setState({
 					text: e.target.value
 				});
+			}
+		}, {
+			key: 'handleEscKey',
+			value: function handleEscKey(event) {
+				if (event.keyCode == 27) {
+					this.close();
+				}
 			}
 		}, {
 			key: 'onSave',

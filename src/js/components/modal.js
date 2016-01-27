@@ -8,6 +8,7 @@ import moment from 'moment';
 class Modal extends Component {
 	constructor(props) {
 		super(props);
+		this.esc = this.handleEscKey.bind(this);
 		this.state = {
 			title: props.event.title,
 			text:props.event.text
@@ -16,6 +17,10 @@ class Modal extends Component {
 	componentDidMount(){
 		const {dispatch, event} = this.props;
 		dispatch(modalOpened(event.date));
+		window.addEventListener("keydown", this.esc, false);
+	}
+	componentWillUnmount(){
+		window.removeEventListener("keydown", this.esc, false);
 	}
 	componentWillReceiveProps(nextProps){
 		this.setState({
@@ -75,6 +80,11 @@ class Modal extends Component {
 			text:e.target.value
 		})
 	}
+	handleEscKey(event){
+        if(event.keyCode == 27){
+	        this.close()
+        }
+    }
 	onSave(){
 		const { cid, date} = this.props.event;
 		const {title, text} = this.state;

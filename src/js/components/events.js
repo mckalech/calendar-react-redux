@@ -20,7 +20,7 @@ class Events extends Component {
 			let days = [];
 			let j=0;
 			while (j<firstDayInMonth && i===0) {
-				days.push(<td key={j}><div className='date'>{utils.texts.days[j]}</div></td>);
+				days.push(<td key={j}><div className="empty-start"><div className='date'>{utils.texts.days[j]}</div></div></td>);
 				j++;
 			}
 			for(;j<7;j++,d++) {

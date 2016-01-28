@@ -6,7 +6,7 @@
 }
 
 #content{
-	width:763px;
+	width:787px;
 }
 .b-header{
 	margin-top: 50px;
@@ -22,7 +22,7 @@
 	}
 	td {
 		height: 95px;
-		width: 97px;
+		width: 110px;
 		font-size: 12px;
 		vertical-align: top;
 		padding: 0;
@@ -31,11 +31,16 @@
 		color: #666666;
 		word-break: break-word;
 
+		.empty-start{
+			padding: 5px;
+		}
+
 		& > a {
 			display: block;
 			height: 85px;
 			padding: 5px;
 			overflow: hidden;
+			text-decoration: none;
 		}
 
 		&.b-cell {

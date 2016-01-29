@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import utils from '../utils';
 import classNames from 'classNames';
 import  { Link } from 'react-router';
-import moment from 'moment';
 
 export default class LinkCell extends Component {
 	render() {

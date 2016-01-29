@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { goToNextMonth, goToPrevMonth } from '../actions';
 import Controls from './controls';
+import Search from './search';
 
 
 
@@ -13,7 +14,7 @@ class Header extends Component {
 				<Controls
 					date={now}
 					clickMonthControl={this.clickMonthControl.bind(this)}/>
-				<div className="columns six">{now.fromNow()}</div>
+				<Search />
 
 			</div>
 		)

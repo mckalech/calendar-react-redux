@@ -11,6 +11,33 @@
 .b-header{
 	margin-top: 50px;
 }
+.b-search-wrapper{
+	position: relative;
+}
+.b-search{
+	float: right;
+	width: 300px;
+}
+.b-search__variants{
+	position: absolute;
+	top:95%;
+	right: 0;
+	width: 300px;
+	list-style: none;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+
+	a{
+		display: block;
+		height: 30px;
+		border-top:1px solid #ddd;
+
+		&:first-child{
+			border-top:none;
+		}
+	}
+}
 .b-table{
 	padding-bottom: 40px;
 

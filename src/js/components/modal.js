@@ -11,7 +11,8 @@ class Modal extends Component {
 		this.esc = this.handleEscKey.bind(this);
 		this.state = {
 			title: props.event.title,
-			text:props.event.text
+			text:props.event.text,
+			errorVisible:false
 		};
 	}
 	componentDidMount(){
@@ -24,12 +25,16 @@ class Modal extends Component {
 	}
 	componentWillReceiveProps(nextProps){
 		this.setState({
-			title: nextProps.event.title,
-			text: nextProps.event.text
+			title: nextProps.event.title || '',
+			text: nextProps.event.text || ''
 		});
 	}
 	render() {
 		let date = this.props.event.date;
+		let errorText = false;
+		if(this.state.errorVisible){
+			errorText = (<span className="b-popup__warning">Для сохранения заполните все поля</span>)
+		}
 		return (
 			<BodyClassName className='body-blocked'>
 				<div className="b-popup" onClick={(e)=>this.handleOverlayClick(e)}>
@@ -52,9 +57,7 @@ class Modal extends Component {
 
 							</textarea>
 						</div>
-						<p className="b-popup__warning-wrapper">
-							<span className="b-popup__warning">Для сохранения заполните все поля</span>
-						</p>
+						<div className="b-popup__warning-wrapper">{errorText}</div>
 						<span className="button button-primary" onClick={()=>this.onSave()}>Сохранить</span>
 						<span style={{float:"right"}} className="button"  onClick={()=>this.onDelete()}>Удалить</span>
 					</div>
@@ -88,13 +91,20 @@ class Modal extends Component {
 	onSave(){
 		const { cid, date} = this.props.event;
 		const {title, text} = this.state;
-		const event ={
-			title,
-			text,
-			cid,
-			date: date.toDate()
-		};
-		this.props.dispatch(postEvent(event))
+		if(title.trim() === '' || text.trim() === ''){
+			this.setState({
+				errorVisible:true
+			})
+		}else{
+			const event ={
+				title,
+				text,
+				cid,
+				date: date.toDate()
+			};
+			this.props.dispatch(postEvent(event))
+		}
+
 	}
 	onDelete(){
 		if(this.props.event.cid !== undefined){

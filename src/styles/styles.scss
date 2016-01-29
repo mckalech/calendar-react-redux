@@ -138,12 +138,7 @@
 
 		.b-popup__warning {
 			color: red;
-			display: none;
 			font-size: 11px;
-
-			&.visible {
-				display: block;
-			}
 		}
 	}
 }

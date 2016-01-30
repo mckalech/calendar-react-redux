@@ -66,7 +66,7 @@
 
 	var _box2 = _interopRequireDefault(_box);
 
-	var _modal = __webpack_require__(274);
+	var _modal = __webpack_require__(275);
 
 	var _modal2 = _interopRequireDefault(_modal);
 
@@ -29481,7 +29481,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var css = __webpack_require__(270);
+	var css = __webpack_require__(271);
 
 	var Box = function (_Component) {
 		_inherits(Box, _Component);
@@ -34454,7 +34454,7 @@
 
 	var _controls2 = _interopRequireDefault(_controls);
 
-	var _search = __webpack_require__(296);
+	var _search = __webpack_require__(270);
 
 	var _search2 = _interopRequireDefault(_search);
 
@@ -34586,13 +34586,130 @@
 /* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(147);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(159);
+
+	var _reactRouter = __webpack_require__(186);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Search = function (_Component) {
+		_inherits(Search, _Component);
+
+		function Search(props) {
+			_classCallCheck(this, Search);
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Search).call(this, props));
+
+			_this.state = {
+				value: ''
+			};
+			return _this;
+		}
+
+		_createClass(Search, [{
+			key: 'filterEvents',
+			value: function filterEvents(text) {
+				if (text.trim().length < 3) {
+					return [];
+				} else {
+					var events = this.props.events;
+
+					return events.filter(function (e) {
+						return e.title.toLowerCase().indexOf(text.toLowerCase()) > -1 || e.text.toLowerCase().indexOf(text.toLowerCase()) > -1;
+					});
+				}
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
+
+				var variants = this.filterEvents(this.state.value);
+				if (variants.length > 0) {
+					variants = variants.map(function (e) {
+						return _react2.default.createElement(
+							_reactRouter.Link,
+							{ key: e.cid, to: "/" + e.date.format('D-M-YYYY') },
+							_react2.default.createElement(
+								'span',
+								{ className: 'b-search__date' },
+								e.date.format('D-M-YYYY')
+							),
+							_react2.default.createElement(
+								'span',
+								{ className: 'b-search__text' },
+								e.title
+							)
+						);
+					});
+					variants = _react2.default.createElement(
+						'ul',
+						{ className: 'b-search__variants' },
+						variants
+					);
+				}
+				return _react2.default.createElement(
+					'div',
+					{ className: 'columns six b-search-wrapper' },
+					_react2.default.createElement('input', { className: 'b-search', type: 'text',
+						placeholder: 'Поиск...',
+						value: this.state.value,
+						onChange: function onChange(e) {
+							return _this2.handleInputChange(e);
+						} }),
+					variants
+				);
+			}
+		}, {
+			key: 'handleInputChange',
+			value: function handleInputChange(e) {
+				var text = e.target.value;
+				this.setState({
+					value: text
+				});
+			}
+		}]);
+
+		return Search;
+	}(_react.Component);
+
+	function mapStateToProps(state) {
+		return {
+			events: state.events
+		};
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Search);
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(271);
+	var content = __webpack_require__(272);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(273)(content, {});
+	var update = __webpack_require__(274)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -34609,10 +34726,10 @@
 	}
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(272)();
+	exports = module.exports = __webpack_require__(273)();
 	// imports
 
 
@@ -34623,7 +34740,7 @@
 
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports) {
 
 	/*
@@ -34679,7 +34796,7 @@
 
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -34933,7 +35050,7 @@
 
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34950,7 +35067,7 @@
 
 	var _reactRedux = __webpack_require__(159);
 
-	var _reactBodyClassname = __webpack_require__(275);
+	var _reactBodyClassname = __webpack_require__(276);
 
 	var _reactBodyClassname2 = _interopRequireDefault(_reactBodyClassname);
 
@@ -35179,14 +35296,14 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Modal);
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(147),
-	  uniq = __webpack_require__(276),
-	  withSideEffect = __webpack_require__(293);
+	  uniq = __webpack_require__(277),
+	  withSideEffect = __webpack_require__(294);
 
 	function reducePropsToState(propsList) {
 	  return uniq(propsList.map(function(props) {
@@ -35219,7 +35336,7 @@
 
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -35230,9 +35347,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCallback = __webpack_require__(277),
-	    baseUniq = __webpack_require__(288),
-	    isIterateeCall = __webpack_require__(292);
+	var baseCallback = __webpack_require__(278),
+	    baseUniq = __webpack_require__(289),
+	    isIterateeCall = __webpack_require__(293);
 
 	/**
 	 * An implementation of `_.uniq` optimized for sorted arrays without support
@@ -35331,7 +35448,7 @@
 
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -35342,10 +35459,10 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseIsEqual = __webpack_require__(278),
-	    bindCallback = __webpack_require__(284),
-	    isArray = __webpack_require__(279),
-	    pairs = __webpack_require__(285);
+	var baseIsEqual = __webpack_require__(279),
+	    bindCallback = __webpack_require__(285),
+	    isArray = __webpack_require__(280),
+	    pairs = __webpack_require__(286);
 
 	/** Used to match property names within property paths. */
 	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
@@ -35759,7 +35876,7 @@
 
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -35770,9 +35887,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArray = __webpack_require__(279),
-	    isTypedArray = __webpack_require__(280),
-	    keys = __webpack_require__(281);
+	var isArray = __webpack_require__(280),
+	    isTypedArray = __webpack_require__(281),
+	    keys = __webpack_require__(282);
 
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -36107,7 +36224,7 @@
 
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports) {
 
 	/**
@@ -36293,7 +36410,7 @@
 
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -36438,7 +36555,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -36449,9 +36566,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(282),
-	    isArguments = __webpack_require__(283),
-	    isArray = __webpack_require__(279);
+	var getNative = __webpack_require__(283),
+	    isArguments = __webpack_require__(284),
+	    isArray = __webpack_require__(280);
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -36680,7 +36797,7 @@
 
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports) {
 
 	/**
@@ -36823,7 +36940,7 @@
 
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -37077,7 +37194,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports) {
 
 	/**
@@ -37148,7 +37265,7 @@
 
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37159,7 +37276,7 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var keys = __webpack_require__(286);
+	var keys = __webpack_require__(287);
 
 	/**
 	 * Converts `value` to an object if it's not one.
@@ -37232,7 +37349,7 @@
 
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37243,9 +37360,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(282),
-	    isArguments = __webpack_require__(287),
-	    isArray = __webpack_require__(279);
+	var getNative = __webpack_require__(283),
+	    isArguments = __webpack_require__(288),
+	    isArray = __webpack_require__(280);
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -37474,7 +37591,7 @@
 
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -37728,7 +37845,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37739,9 +37856,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseIndexOf = __webpack_require__(289),
-	    cacheIndexOf = __webpack_require__(290),
-	    createCache = __webpack_require__(291);
+	var baseIndexOf = __webpack_require__(290),
+	    cacheIndexOf = __webpack_require__(291),
+	    createCache = __webpack_require__(292);
 
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
@@ -37802,7 +37919,7 @@
 
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports) {
 
 	/**
@@ -37865,7 +37982,7 @@
 
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports) {
 
 	/**
@@ -37924,7 +38041,7 @@
 
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -37935,7 +38052,7 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(282);
+	var getNative = __webpack_require__(283);
 
 	/** Native method references. */
 	var Set = getNative(global, 'Set');
@@ -38022,7 +38139,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports) {
 
 	/**
@@ -38160,7 +38277,7 @@
 
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38177,11 +38294,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _fbjsLibExecutionEnvironment = __webpack_require__(294);
+	var _fbjsLibExecutionEnvironment = __webpack_require__(295);
 
 	var _fbjsLibExecutionEnvironment2 = _interopRequireDefault(_fbjsLibExecutionEnvironment);
 
-	var _fbjsLibShallowEqual = __webpack_require__(295);
+	var _fbjsLibShallowEqual = __webpack_require__(296);
 
 	var _fbjsLibShallowEqual2 = _interopRequireDefault(_fbjsLibShallowEqual);
 
@@ -38289,7 +38406,7 @@
 	};
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports) {
 
 	/**
@@ -38330,7 +38447,7 @@
 	module.exports = ExecutionEnvironment;
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports) {
 
 	/**
@@ -38383,130 +38500,6 @@
 	}
 
 	module.exports = shallowEqual;
-
-/***/ },
-/* 296 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _react = __webpack_require__(147);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactRedux = __webpack_require__(159);
-
-	var _reactRouter = __webpack_require__(186);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Search = function (_Component) {
-		_inherits(Search, _Component);
-
-		function Search(props) {
-			_classCallCheck(this, Search);
-
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Search).call(this, props));
-
-			_this.state = {
-				value: '',
-				filteredEvents: []
-			};
-			return _this;
-		}
-
-		_createClass(Search, [{
-			key: 'filterEvents',
-			value: function filterEvents(text) {
-				var events = this.props.events;
-
-				events = events.filter(function (e) {
-					return e.title.toLowerCase().indexOf(text.toLowerCase()) > -1 || e.text.toLowerCase().indexOf(text.toLowerCase()) > -1;
-				});
-				this.setState({
-					filteredEvents: events
-				});
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var _this2 = this;
-
-				var variants = false;
-				if (this.state.filteredEvents.length > 0) {
-					variants = this.state.filteredEvents.map(function (e) {
-						return _react2.default.createElement(
-							_reactRouter.Link,
-							{ key: e.cid, to: "/" + e.date.format('D-M-YYYY') },
-							_react2.default.createElement(
-								'span',
-								{ className: 'b-search__date' },
-								e.date.format('D-M-YYYY')
-							),
-							_react2.default.createElement(
-								'span',
-								{ className: 'b-search__text' },
-								e.title
-							)
-						);
-					});
-					variants = _react2.default.createElement(
-						'ul',
-						{ className: 'b-search__variants' },
-						variants
-					);
-				}
-				return _react2.default.createElement(
-					'div',
-					{ className: 'columns six b-search-wrapper' },
-					_react2.default.createElement('input', { className: 'b-search', type: 'text',
-						placeholder: 'Поиск...',
-						value: this.state.value,
-						onChange: function onChange(e) {
-							return _this2.handleInputChange(e);
-						} }),
-					variants
-				);
-			}
-		}, {
-			key: 'handleInputChange',
-			value: function handleInputChange(e) {
-				var text = e.target.value;
-				this.setState({
-					value: text
-				});
-				if (text.trim().length > 2) {
-					this.filterEvents(text);
-				} else {
-					this.setState({
-						filteredEvents: []
-					});
-				}
-			}
-		}]);
-
-		return Search;
-	}(_react.Component);
-
-	function mapStateToProps(state) {
-		return {
-			events: state.events
-		};
-	}
-
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Search);
 
 /***/ }
 /******/ ]);

@@ -6,23 +6,23 @@ class Search extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value:'',
-			filteredEvents:[]
+			value:''
 		};
 	}
 	filterEvents(text){
-		let {events} = this.props;
-		events = events.filter(function(e) {
-			return e.title.toLowerCase().indexOf(text.toLowerCase()) > -1 || e.text.toLowerCase().indexOf(text.toLowerCase()) > -1
-		});
-		this.setState({
-			filteredEvents: events
-		});
+		if(text.trim().length<3){
+			return [];
+		}else{
+			let {events} = this.props;
+			return events.filter(function(e) {
+				return e.title.toLowerCase().indexOf(text.toLowerCase()) > -1 || e.text.toLowerCase().indexOf(text.toLowerCase()) > -1
+			});
+		}
 	}
 	render() {
-		let variants = false;
-		if(this.state.filteredEvents.length>0){
-			variants = this.state.filteredEvents.map((e)=>
+		let variants = this.filterEvents(this.state.value);
+		if(variants.length>0){
+			variants = variants.map((e)=>
 				<Link key={e.cid} to={"/"+e.date.format('D-M-YYYY')}>
 					<span className="b-search__date">{e.date.format('D-M-YYYY')}</span>
 					<span className="b-search__text">{e.title}</span>
@@ -50,13 +50,7 @@ class Search extends Component {
 		this.setState({
 			value:text
 		});
-		if(text.trim().length>2){
-			this.filterEvents(text);
-		}else{
-			this.setState({
-				filteredEvents: []
-			});
-		}
+
 	}
 }
 

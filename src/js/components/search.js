@@ -10,14 +10,23 @@ class Search extends Component {
 		};
 		this.bindDocumentEvent()
 	}
-	filterEvents(text){
-		if(text.trim().length<3){
+	filterEvents(query){
+		if(query.trim().length<3){
 			return [];
 		}else{
-			let {events} = this.props;
-			return events.filter(function(e) {
-				return e.title.toLowerCase().indexOf(text.toLowerCase()) > -1 || e.text.toLowerCase().indexOf(text.toLowerCase()) > -1
+			let {events} = this.props,
+			foundEvents=[];
+			events.forEach(function(e){
+				if (e.title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+	                e.foundText = e.title;
+					foundEvents.push(e);
+	            } else if (e.text.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+	                e.foundText = e.text;
+					foundEvents.push(e);
+	            }
+
 			});
+			return foundEvents;
 		}
 	}
 	render() {
@@ -26,7 +35,7 @@ class Search extends Component {
 			variants = variants.map((e)=>
 				<Link key={e.cid} to={"/"+e.date.format('D-M-YYYY')}>
 					<span className="b-search__date">{e.date.format('D-M-YYYY')}</span>
-					<span className="b-search__text">{e.title}</span>
+					<span className="b-search__text">{e.foundText}</span>
 				</Link>
 			);
 			variants = (

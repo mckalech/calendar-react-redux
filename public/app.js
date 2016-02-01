@@ -34564,7 +34564,7 @@
 					_react2.default.createElement(
 						'span',
 						null,
-						this.props.date.format('D MMMM YYYY')
+						this.props.date.format('MMMM YYYY')
 					),
 					_react2.default.createElement(
 						'span',
@@ -34587,6 +34587,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -34627,21 +34629,36 @@
 
 		_createClass(Search, [{
 			key: 'filterEvents',
-			value: function filterEvents(text) {
-				if (text.trim().length < 3) {
+			value: function filterEvents(query) {
+				var _this2 = this;
+
+				if (query.trim().length < 3) {
 					return [];
 				} else {
-					var events = this.props.events;
+					var _ret = function () {
+						var events = _this2.props.events;
+						var foundEvents = [];
+						events.forEach(function (e) {
+							if (e.title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+								e.foundText = e.title;
+								foundEvents.push(e);
+							} else if (e.text.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+								e.foundText = e.text;
+								foundEvents.push(e);
+							}
+						});
+						return {
+							v: foundEvents
+						};
+					}();
 
-					return events.filter(function (e) {
-						return e.title.toLowerCase().indexOf(text.toLowerCase()) > -1 || e.text.toLowerCase().indexOf(text.toLowerCase()) > -1;
-					});
+					if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 				}
 			}
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this2 = this;
+				var _this3 = this;
 
 				var variants = this.filterEvents(this.state.value);
 				if (variants.length > 0) {
@@ -34657,7 +34674,7 @@
 							_react2.default.createElement(
 								'span',
 								{ className: 'b-search__text' },
-								e.title
+								e.foundText
 							)
 						);
 					});
@@ -34674,7 +34691,7 @@
 						placeholder: 'Поиск...',
 						value: this.state.value,
 						onChange: function onChange(e) {
-							return _this2.handleInputChange(e);
+							return _this3.handleInputChange(e);
 						} }),
 					variants
 				);

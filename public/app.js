@@ -34621,6 +34621,7 @@
 			_this.state = {
 				value: ''
 			};
+			_this.bindDocumentEvent();
 			return _this;
 		}
 
@@ -34685,6 +34686,15 @@
 				this.setState({
 					value: text
 				});
+			}
+		}, {
+			key: 'bindDocumentEvent',
+			value: function bindDocumentEvent() {
+				window.addEventListener("click", function (e) {
+					if (!e.target.classList.contains('b-search')) {
+						this.setState({ value: '' });
+					}
+				}.bind(this));
 			}
 		}]);
 

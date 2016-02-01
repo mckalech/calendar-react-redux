@@ -8,6 +8,7 @@ class Search extends Component {
 		this.state = {
 			value:''
 		};
+		this.bindDocumentEvent()
 	}
 	filterEvents(text){
 		if(text.trim().length<3){
@@ -51,6 +52,13 @@ class Search extends Component {
 			value:text
 		});
 
+	}
+	bindDocumentEvent(){
+		window.addEventListener("click", function(e){
+			if(!e.target.classList.contains('b-search')){
+				this.setState({value:''})
+			}
+		}.bind(this))
 	}
 }
 

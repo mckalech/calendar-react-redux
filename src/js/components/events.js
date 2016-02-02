@@ -44,7 +44,7 @@ class Events extends Component {
 		}
 
 		return (
-			<div className='b-table row'>
+			<div className='b-table '>
 				<table>
 					<tbody>
 						{weeks}

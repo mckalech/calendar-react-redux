@@ -10,12 +10,13 @@ class Header extends Component {
 	render() {
 		const { dispatch, now } = this.props;
 		return (
-			<div className='b-header row'>
-				<Controls
-					date={now}
-					clickMonthControl={this.clickMonthControl.bind(this)}/>
-				<Search />
-
+			<div className='b-header'>
+				<div className="b-container row">
+					<Controls
+						date={now}
+						clickMonthControl={this.clickMonthControl.bind(this)}/>
+					<Search />
+				</div>
 			</div>
 		)
 	}

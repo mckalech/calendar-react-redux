@@ -84,7 +84,12 @@ export function goToDate(date){
 	return { type: constants.GO_TO_DATE, date}
 }
 
-
+export function goToToday(){
+	return function (dispatch) {
+        let mom = moment();
+		dispatch(goToDate(mom));
+    };
+}
 
 export function modalOpened(date){
 	return function (dispatch) {

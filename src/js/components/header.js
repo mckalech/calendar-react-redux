@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { goToNextMonth, goToPrevMonth } from '../actions';
+import { goToNextMonth, goToPrevMonth, goToToday } from '../actions';
 import Controls from './controls';
 import Search from './search';
 
@@ -14,7 +14,8 @@ class Header extends Component {
 				<div className="b-container row">
 					<Controls
 						date={now}
-						clickMonthControl={this.clickMonthControl.bind(this)}/>
+						clickMonthControl={this.clickMonthControl.bind(this)}
+						clickToday={this.clickToday.bind(this)}/>
 					<Search />
 				</div>
 			</div>
@@ -26,6 +27,9 @@ class Header extends Component {
 		}else{
 			this.props.dispatch(goToPrevMonth())
 		}
+	}
+	clickToday(){
+		this.props.dispatch(goToToday())
 	}
 }
 

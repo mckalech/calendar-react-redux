@@ -29690,6 +29690,7 @@
 	exports.goToNextMonth = goToNextMonth;
 	exports.goToPrevMonth = goToPrevMonth;
 	exports.goToDate = goToDate;
+	exports.goToToday = goToToday;
 	exports.modalOpened = modalOpened;
 	exports.closeModal = closeModal;
 
@@ -29785,6 +29786,13 @@
 
 	function goToDate(date) {
 		return { type: _constants2.default.GO_TO_DATE, date: date };
+	}
+
+	function goToToday() {
+		return function (dispatch) {
+			var mom = (0, _moment2.default)();
+			dispatch(goToDate(mom));
+		};
 	}
 
 	function modalOpened(date) {
@@ -34490,7 +34498,8 @@
 						{ className: 'b-container row' },
 						_react2.default.createElement(_controls2.default, {
 							date: now,
-							clickMonthControl: this.clickMonthControl.bind(this) }),
+							clickMonthControl: this.clickMonthControl.bind(this),
+							clickToday: this.clickToday.bind(this) }),
 						_react2.default.createElement(_search2.default, null)
 					)
 				);
@@ -34503,6 +34512,11 @@
 				} else {
 					this.props.dispatch((0, _actions.goToPrevMonth)());
 				}
+			}
+		}, {
+			key: 'clickToday',
+			value: function clickToday() {
+				this.props.dispatch((0, _actions.goToToday)());
 			}
 		}]);
 
@@ -34571,7 +34585,9 @@
 						} }),
 					_react2.default.createElement(
 						"span",
-						{ className: "b-header__today" },
+						{ className: "b-header__today", onClick: function onClick() {
+								return _this2.props.clickToday();
+							} },
 						"Сегодня"
 					)
 				);

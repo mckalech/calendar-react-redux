@@ -84,9 +84,9 @@
 }
 .b-search__variants{
 	position: absolute;
-	top:95%;
+	top:103%;
 	right: 0;
-	width: 300px;
+	width: 298px;
 	list-style: none;
 	background: #fff;
 	border: 1px solid #ddd;
@@ -94,15 +94,31 @@
 
 	a{
 		display: block;
-		line-height: 40px;
-		padding: 0 20px;
+		padding: 8px 10px;
 		border-top:1px solid #ddd;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		text-decoration: none;
+		&:hover{
+			background: #27a1ff;
+			color:#fff;
+		}
 
 		&:first-child{
 			border-top:none;
+		}
+		.b-search__date{
+			display: block;
+			font-size: 11px;
+		    color: #666;
+			line-height: 11px;
+		    font-weight: 300;
+			margin-bottom: 3px;
+		}
+		.b-search__text{
+			font-size: 14px;
+			line-height: 14px;
 		}
 	}
 }

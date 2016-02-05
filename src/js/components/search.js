@@ -34,7 +34,7 @@ class Search extends Component {
 		if(variants.length>0){
 			variants = variants.map((e)=>
 				<Link key={e.cid} to={"/"+e.date.format('D-M-YYYY')}>
-					<span className="b-search__date">{e.date.format('D-M-YYYY')} </span>
+					<span className="b-search__date">{e.date.format('D MMMM YYYY')} </span>
 					<span className="b-search__text">{e.foundText}</span>
 				</Link>
 			);

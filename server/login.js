@@ -11,8 +11,8 @@ function hash (password) {
     return crypto.createHash('sha512').update(password).digest('hex');
 }
 
-passport.use(new LocalStrategy(function (username, password, done) {
-    var user = users.where({ username: username, passwordHash: hash(password) }).items[0];
+passport.use(new LocalStrategy({usernameField: 'email'}, function (email, password, done) {
+    var user = users.where({ email: email, passwordHash: hash(password) }).items[0];
 
     if (user) {
         done(null, user);
@@ -48,10 +48,9 @@ router.get('/login', function (req, res) {
 });
 
 router.post('/signup', function (req, res, next) {
-    if (users.where({ username: req.body.username }).items.length === 0) {
+    if (users.where({ email: req.body.email }).items.length === 0) {
         var user = {
             email: req.body.email,
-            username: req.body.username,
             passwordHash: hash(req.body.password)
         };
 
@@ -87,7 +86,7 @@ function loginRequired (req, res, next) {
 function makeUserSafe (user) {
     var safeUser = {};
 
-    var safeKeys = ['cid', 'email', 'username'];
+    var safeKeys = ['cid', 'email'];
 
     safeKeys.forEach(function (key) {
         safeUser[key] = user[key];

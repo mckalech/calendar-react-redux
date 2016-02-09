@@ -50,7 +50,6 @@ router.get('/login', function (req, res) {
 router.post('/signup', function (req, res, next) {
     if (users.where({ username: req.body.username }).items.length === 0) {
         var user = {
-            fullname: req.body.fullname,
             email: req.body.email,
             username: req.body.username,
             passwordHash: hash(req.body.password)
@@ -88,7 +87,7 @@ function loginRequired (req, res, next) {
 function makeUserSafe (user) {
     var safeUser = {};
 
-    var safeKeys = ['cid', 'fullname', 'email', 'username'];
+    var safeKeys = ['cid', 'email', 'username'];
 
     safeKeys.forEach(function (key) {
         safeUser[key] = user[key];

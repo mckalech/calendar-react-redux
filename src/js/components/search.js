@@ -72,6 +72,13 @@ class Search extends Component {
 }
 
 function mapStateToProps(state) {
+	state.events.sort(function(a,b){
+		if(a.date.isBefore(b.date)){
+			return -1
+		}else{
+			return 1;
+		}
+	});
 	return {
 		events: state.events
 	};

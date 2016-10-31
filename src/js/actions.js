@@ -22,6 +22,7 @@ export function fetchEvents() {
 }
 
 
+
 function postEventRequest(){
 	return { type: constants.POST_EVENT_REQUEST};
 }
